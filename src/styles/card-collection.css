@@ -9,3 +9,5 @@
 .managed-collection .feature-stack{gap:var(--card-gap,24px)}
 
 .managed-card-media .feature-art:has(>img){height:auto}.managed-card-media .feature-art>img{height:auto}.collection-dots button{width:24px;height:24px;background:transparent;display:grid;place-items:center}.collection-dots button::before{content:"";width:9px;height:9px;border-radius:50%;background:color-mix(in srgb,var(--ink) 20%,transparent)}.collection-dots button[aria-pressed=true]{background:transparent}.collection-dots button[aria-pressed=true]::before{width:22px;border-radius:8px;background:var(--primary)}
+
+.managed-collection[data-card-type=stats] .managed-card-copy>strong{font-size:55px;line-height:1.2}
