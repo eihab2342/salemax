@@ -1,0 +1,40 @@
+export type ButtonData = { label?: string | null; url?: string | null; variant?: string | null };
+export type NavItem = ButtonData & { description?: string | null; children?: NavItem[] };
+export type Item = {
+  title?: string | null; name?: string | null; label?: string | null; text?: string | null;
+  description?: string | null; image?: string | null; alt?: string | null; icon?: string | null;
+  url?: string | null; link_label?: string | null; tag?: string | null; category?: string | null; anchor?: string | null;
+  value?: string | null; role?: string | null; company?: string | null; quote?: string | null;
+  question?: string | null; answer?: string | null; price?: string | null; currency?: string | null;
+  period?: string | null; features?: { text?: string | null }[]; highlighted?: boolean;
+  button_label?: string | null; button_url?: string | null; address?: string | null;
+  phone?: string | null; email?: string | null; map_url?: string | null; video_url?: string | null;
+};
+export type PreviewColumn = { title?: string; color?: string; cards?: { name?: string; description?: string; tag?: string; initials?: string }[] };
+export type Content = {
+  layout?: 'stacked' | 'bento' | null;
+  title?: string | null; title_accent?: string | null; eyebrow?: string | null;
+  description?: string | null; body?: string | null; image?: string | null; image_alt?: string | null;
+  video_url?: string | null; buttons?: ButtonData[]; notes?: { text?: string }[]; items?: Item[];
+  form_slug?: string | null; preview_title?: string; preview_note?: string;
+  preview_tabs?: { label?: string; icon?: string }[]; preview_metrics?: { label?: string; value?: string; icon?: string }[];
+  preview_columns?: PreviewColumn[]; preview_badge?: string; preview_badge_text?: string;
+};
+export type Section = { type: string; content: Content; settings?: { background?: string; alignment?: string; spacing?: string; anchor?: string } | null };
+export type Seo = { title?: string; description?: string; image?: string; noindex?: boolean };
+export type PageData = { slug: string; title: string; locale: string; seo?: Seo | null; sections: Section[] };
+export type Settings = {
+  brand?: { name?: string; tagline?: string; logo?: string; favicon?: string; direction?: string };
+  navigation?: { items?: NavItem[]; buttons?: ButtonData[] };
+  footer?: { description?: string; copyright?: string; columns?: { title?: string; links?: ButtonData[] }[] };
+  contact?: { email?: string; phone?: string; whatsapp_url?: string; login_url?: string; booking_url?: string; address?: string };
+  social?: { items?: (ButtonData & { icon?: string })[] };
+  theme?: { primary_color?: string; secondary_color?: string; background_color?: string; text_color?: string; font_family?: string };
+  interface?: Record<string, string>;
+};
+export type FormField = { name: string; label: string; type: string; required: boolean; options?: string[] };
+export type FormData = { slug: string; locale: string; title: string; fields: FormField[]; success_message: string; submit_label: string; is_active?: boolean };
+export type PreviewToken = { expires: string; signature: string };
+export type SiteContext = { locale: string; preview: boolean; token?: PreviewToken };
+export type PreviewBundle = { pages: PageData[]; settings: Settings; forms: FormData[] };
+export type SiteData = { page: PageData; settings: Settings; forms: FormData[]; context: SiteContext };
