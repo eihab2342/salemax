@@ -1,0 +1,42 @@
+/* Public appearance controls, independent from the administrative UI preference. */
+.website{--deep-surface:var(--ink);--on-accent:#152a30;--on-primary:#fff}
+.hero-with-visual .hero-inner,.story-section,.site-footer{background:var(--deep-surface)}
+.button-primary{color:var(--on-primary)}
+.hero-with-visual .button-primary{color:var(--on-accent)}
+.hero-with-visual .button-primary:hover{color:var(--on-accent)}
+.stack-card-1 .stack-card-face,.feature-card-1{background:color-mix(in srgb,var(--primary),#fff 89%);border-color:color-mix(in srgb,var(--primary),#fff 75%)}
+.stack-card-2 .stack-card-face,.feature-card-2{background:color-mix(in srgb,var(--secondary),#fff 68%);border-color:color-mix(in srgb,var(--secondary),#fff 40%)}
+.stack-card-3 .stack-card-face,.feature-card-3{background:color-mix(in srgb,var(--primary),#fff 93%);border-color:color-mix(in srgb,var(--primary),#fff 80%)}
+.resource-art{background:color-mix(in srgb,var(--secondary),#fff 55%)}
+.resource-art-1{background:color-mix(in srgb,var(--primary),#fff 90%)}
+.resource-art-2{background:color-mix(in srgb,var(--secondary),#fff 72%)}
+.resource-art-icon,.resource-art-1 .resource-art-icon,.resource-art-2 .resource-art-icon{color:color-mix(in srgb,var(--primary),#000 18%)}
+.website[data-site-theme=dark]{color-scheme:dark;--deep-surface:color-mix(in srgb,var(--page-background),#000 15%);--surface:color-mix(in srgb,var(--page-background),#fff 5%);--line:color-mix(in srgb,var(--ink),transparent 82%);--muted:color-mix(in srgb,var(--ink),transparent 32%);--soft-ink:color-mix(in srgb,var(--ink),transparent 23%)}
+.website[data-site-theme=dark] .site-header{background:color-mix(in srgb,var(--page-background),transparent 5%)}
+.website[data-site-theme=dark] :is(.nav-dropdown-content,.mobile-nav){background:var(--surface);border-color:var(--line);color:var(--ink)}
+.website[data-site-theme=dark] .nav-dropdown-content>a:not(.dropdown-parent):hover{background:color-mix(in srgb,var(--secondary),var(--surface) 93%)}
+.website[data-site-theme=dark] .nav-dropdown-content small{color:var(--muted)}
+.website[data-site-theme=dark] .hero-compact{background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--secondary),transparent 94%),transparent 75%)}
+.website[data-site-theme=dark] .hero-description{color:var(--soft-ink)}
+.website[data-site-theme=dark] .hero-eyebrow{color:var(--ink);border-color:var(--line)}
+.website[data-site-theme=dark] .hero-with-visual .product-window{--ink:#173238;--line:#e3e9df;--muted:#77817c;color:#173238;color-scheme:light}
+.website[data-site-theme=dark] .hero-with-visual .floating-proof{color:#173238}
+.website[data-site-theme=dark] :is(.stack-card,.feature-card,.resource-art){--ink:#173238;--soft-ink:#50616a;--line:#cdd9d5;--muted:#718074;color:#173238;color-scheme:light}
+.website[data-site-theme=dark] .stack-index a[aria-current=step]{background:var(--secondary);border-color:var(--secondary);color:#152a30}
+.website[data-site-theme=dark] .stack-index a[aria-current=step] .stack-index-number{color:#152a30}
+.website[data-site-theme=dark] .cta-box{--ink:#152a30;--soft-ink:#42594b;color:#152a30;color-scheme:light;border-color:transparent}
+.website[data-site-theme=dark] .cta-box .button-primary{background:#152a30;color:#fff;border-color:#152a30}
+.website[data-site-theme=dark] .solutions-section{background:color-mix(in srgb,var(--page-background),#fff 2%)}
+.website[data-site-theme=dark] .solution-card{background:var(--surface)}
+.website[data-site-theme=dark] .solution-top>svg{background:color-mix(in srgb,var(--secondary),var(--surface) 94%)}
+.website[data-site-theme=dark] .solution-card:hover .solution-link>svg{color:#152a30}
+.website[data-site-theme=dark] .faq-section{background:color-mix(in srgb,var(--page-background),#fff 2%)}
+.website[data-site-theme=dark] .faq-list details{background:var(--surface)}
+.website[data-site-theme=dark] .faq-list details[open] summary>i{color:#152a30}
+.website[data-site-theme=dark] .faq-emblem,.website[data-site-theme=dark] .faq-emblem>span{color:#152a30}
+.website[data-site-theme=dark] .price-card.highlighted{background:color-mix(in srgb,var(--secondary),var(--page-background) 94%);border-color:color-mix(in srgb,var(--secondary),transparent 45%)}
+.website[data-site-theme=dark] :is(.price-period,.price-card>p,.price-card li,.contact-methods a,.offices-grid p,.offices-grid a,.team-grid p,.logos-grid p,.testimonials-grid figcaption small){color:var(--soft-ink)}
+.website[data-site-theme=dark] :is(.testimonials-grid figure,.gallery-grid figure,.offices-grid article){background:var(--surface);border-color:var(--line)}
+.website[data-site-theme=dark] .gallery-grid figcaption{color:var(--ink)}
+.website[data-site-theme=dark] .form-unavailable{background:var(--surface);border-color:var(--line);color:var(--muted)}
+.website[data-site-theme=dark] .text-section .prose-body{color:var(--soft-ink)}

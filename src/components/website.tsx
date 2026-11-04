@@ -9,12 +9,16 @@ import { VisitTracker } from './visit-tracker';
 export function Website({ site }: { site: SiteData }) {
   const theme = site.settings.theme;
   const font = theme?.font_family;
+  const primary = validColor(theme?.primary_color) || '#f0643b';
+  const rgb = [1, 3, 5].map(index => parseInt(primary.slice(index, index + 2), 16) / 255).map(channel => channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4);
+  const luminance = rgb[0] * .2126 + rgb[1] * .7152 + rgb[2] * .0722;
   const styles = {
     '--primary': validColor(theme?.primary_color), '--secondary': validColor(theme?.secondary_color),
     '--page-background': validColor(theme?.background_color), '--ink': validColor(theme?.text_color),
+    '--on-primary': luminance > .179 ? '#13252a' : '#ffffff',
     '--site-font': font === 'Cairo' ? 'Cairo, var(--font-arabic)' : font === 'Tajawal' ? 'Tajawal, var(--font-arabic)' : font === 'Inter' ? 'Inter, var(--font-latin)' : 'var(--font-arabic)',
   } as CSSProperties;
-  return <div id="top" className="website" lang={site.context.locale} dir={site.settings.brand?.direction === 'ltr' ? 'ltr' : 'rtl'} style={styles}>
+  return <div id="top" className="website" data-site-theme={theme?.mode === 'dark' ? 'dark' : 'light'} lang={site.context.locale} dir={site.settings.brand?.direction === 'ltr' ? 'ltr' : 'rtl'} style={styles}>
     <a className="skip-link" href="#main-content">{site.settings.interface?.skip_link}</a>
     <ExperienceEffects />
     {!site.context.preview && <VisitTracker locale={site.context.locale} />}

@@ -46,6 +46,12 @@ The dashboard's **معاينة الموقع** button saves the current draft and
 
 ## Configuration
 
+Public appearance is controlled through the admin's dedicated **Appearance &
+Colors** screen. The CMS theme now accepts `mode: light | dark` along with the
+existing primary, secondary, background, text colors and font. Public dark-mode
+surfaces and palette-based card colors are in `src/styles/site-appearance.css`.
+This shared setting is independent of an administrator's personal dashboard theme.
+
 The published website sends minimal anonymous page-view events to Laravel for
 admin-only analytics. It stores a random browser identifier in localStorage and
 respects Do Not Track and Global Privacy Control. Local development and signed

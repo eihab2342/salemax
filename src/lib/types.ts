@@ -29,7 +29,7 @@ export type Settings = {
   footer?: { description?: string; copyright?: string; columns?: { title?: string; links?: ButtonData[] }[] };
   contact?: { email?: string; phone?: string; whatsapp_url?: string; login_url?: string; booking_url?: string; address?: string };
   social?: { items?: (ButtonData & { icon?: string })[] };
-  theme?: { primary_color?: string; secondary_color?: string; background_color?: string; text_color?: string; font_family?: string };
+  theme?: { mode?: 'light' | 'dark'; primary_color?: string; secondary_color?: string; background_color?: string; text_color?: string; font_family?: string };
   interface?: Record<string, string>;
 };
 export type FormField = { name: string; label: string; type: string; required: boolean; options?: string[] };
