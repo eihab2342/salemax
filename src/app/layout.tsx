@@ -20,6 +20,7 @@ import './globals.css';
 import '../styles/editorial.css';
 import '../styles/site-appearance.css';
 import '../styles/section-variants.css';
+import '../styles/brand-identity.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

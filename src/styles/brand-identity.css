@@ -1,0 +1,37 @@
+/* Ribbon mark: crimson accents, charcoal depth and silver surfaces.
+   Every accent still follows the editable CMS theme tokens. */
+.website{--muted:color-mix(in srgb,var(--ink),transparent 38%);--soft-ink:color-mix(in srgb,var(--ink),transparent 25%);--line:color-mix(in srgb,var(--ink),transparent 88%)}
+.brand-logo{height:54px;max-width:200px;width:auto;object-fit:contain}
+.site-footer .brand:has(.brand-logo),.website[data-site-theme=dark] .site-header .brand:has(.brand-logo){background:#fff;border-radius:12px;padding:3px 12px}
+.hero-with-visual .hero-inner{background:radial-gradient(ellipse at 25% 90%,color-mix(in srgb,var(--primary),transparent 77%),transparent 65%),var(--deep-surface)}
+.hero-with-visual .accent-text,.story-section .accent-text{color:var(--primary)}
+.hero-with-visual .button-primary,.hero-with-visual .button-primary:hover{background:var(--primary);border-color:var(--primary);color:var(--on-primary);box-shadow:0 10px 35px color-mix(in srgb,var(--primary),transparent 80%)}
+.hero-with-visual :is(.hero-description,.hero-notes,.hero-eyebrow),.story-section :is(.eyebrow,.section-heading p,.prose-body,.story-step p){color:#c8c8ce}
+.hero-with-visual .hero-notes svg,.hero-with-visual .hero-eyebrow>i,.story-section .eyebrow>i{color:var(--primary)}
+.hero-with-visual .hero-eyebrow>i,.story-section .eyebrow>i{background:var(--primary)}
+.hero-with-visual .hero-atmosphere:after{background:radial-gradient(ellipse,color-mix(in srgb,var(--primary),transparent 75%),transparent 65%)}
+.hero-with-visual .product-window{--ink:#171719;--muted:#727278;--line:#e7e7eb;color:#171719;background:#fff}
+.hero-with-visual .product-window :is(.product-topbar,.pipeline-column){background:#f6f6f8}
+.hero-with-visual :is(.product-rail>span,.product-tabs button.active){color:var(--primary)}
+.hero-with-visual :is(.metric-symbol,.deal-tag,.deal-avatar){background:color-mix(in srgb,var(--primary),#fff 94%);color:color-mix(in srgb,var(--primary),#000 25%)}
+.hero-with-visual :is(.floating-proof,.proof-icon){color:#171719;background:#f3f3f5}
+.stack-card-0 .stack-card-face,.feature-card-0{background:color-mix(in srgb,var(--secondary),#fff 50%);border-color:color-mix(in srgb,var(--secondary),#000 8%)}
+.stack-card-1 .stack-card-face,.feature-card-1{background:color-mix(in srgb,var(--primary),#fff 94%);border-color:color-mix(in srgb,var(--primary),#fff 80%)}
+.stack-card-2 .stack-card-face,.feature-card-2{background:#f0f0f3;border-color:#dedee3}
+.stack-card-3 .stack-card-face,.feature-card-3{background:color-mix(in srgb,var(--primary),#fff 97%);border-color:color-mix(in srgb,var(--primary),#fff 85%)}
+.stack-index a[aria-current=step]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.stack-index a[aria-current=step] .stack-index-number{color:var(--on-primary)}
+:is(.relationship-hub,.relationship-node,.collaboration-art>div>span,.collaboration-check){background:#fff;color:var(--primary);border-color:color-mix(in srgb,var(--primary),#fff 83%)}
+.feature-art-0,.feature-art-1,.feature-art-2,.feature-art-3{background:transparent}
+.insight-art{color:var(--primary)}.insight-art>div>span{background:color-mix(in srgb,var(--primary),#fff 65%)}
+.solutions-section,.faq-section{background:color-mix(in srgb,var(--secondary),var(--page-background) 78%)}
+.resource-art,.resource-art-2{background:color-mix(in srgb,var(--secondary),#fff 40%)}
+.resource-art-1{background:color-mix(in srgb,var(--primary),#fff 94%)}
+.cta-box{background:color-mix(in srgb,var(--secondary),#fff 38%);color:#171719}
+.cta-box .section-heading :is(h2,p){color:#171719}.cta-box .button-primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.site-footer :is(.footer-brand-block>p,.footer-columns a,.footer-tagline,.footer-bottom){color:#bcbcc4}.site-footer .footer-columns a:hover{color:#fff}.footer-tagline>i{background:var(--primary)}
+.site-footer .footer-signature{color:color-mix(in srgb,var(--primary),#fff 18%)}
+.hero[data-variant=spotlight] .hero-inner{background:transparent;color:var(--ink)}
+.hero[data-variant=spotlight] :is(.hero-description,.hero-notes,.hero-eyebrow){color:var(--ink)}
+.website[data-site-theme=dark] :is(.solutions-section,.faq-section){background:color-mix(in srgb,var(--page-background),#fff 2%)}
+@media(max-width:600px){.brand-logo{max-width:150px;height:43px}.site-footer .brand-logo{max-width:190px;height:52px}}
