@@ -14,7 +14,7 @@ export function Website({ site }: { site: SiteData }) {
   const luminance = rgb[0] * .2126 + rgb[1] * .7152 + rgb[2] * .0722;
   const styles = {
     '--primary': validColor(theme?.primary_color), '--secondary': validColor(theme?.secondary_color),
-    '--page-background': validColor(theme?.background_color), '--ink': validColor(theme?.text_color),
+    '--page-background': validColor(theme?.background_color) || (theme?.mode === 'dark' ? '#10191f' : undefined), '--ink': validColor(theme?.text_color) || (theme?.mode === 'dark' ? '#e5edf2' : undefined),
     '--on-primary': luminance > .179 ? '#13252a' : '#ffffff',
     '--site-font': font === 'Cairo' ? 'Cairo, var(--font-arabic)' : font === 'Tajawal' ? 'Tajawal, var(--font-arabic)' : font === 'Inter' ? 'Inter, var(--font-latin)' : 'var(--font-arabic)',
   } as CSSProperties;
