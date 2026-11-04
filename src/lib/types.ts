@@ -22,7 +22,7 @@ export type Content = {
   preview_columns?: PreviewColumn[]; preview_badge?: string; preview_badge_text?: string;
 };
 export type MotionSettings = { enabled?: boolean; reveal?: 'rise' | 'fade' | 'slide' | 'zoom' | 'none'; duration?: string; intensity?: 'subtle' | 'normal' | 'expressive'; stagger?: boolean; hover?: boolean; magnetic?: boolean; sheen?: boolean; glow?: boolean; parallax?: boolean; floating?: boolean; micro?: boolean; counters?: boolean; marquee?: boolean; progress?: boolean; mobile?: boolean };
-export type Section = { type: string; is_visible?: boolean; content: Content; settings?: { variant?: 'classic' | 'editorial' | 'spotlight'; background?: string; alignment?: string; spacing?: string; anchor?: string; motion?: 'inherit' | 'none' | 'fade' | 'rise' | 'slide' | 'zoom'; motion_duration?: number; motion_delay?: number; motion_once?: boolean } | null };
+export type Section = { type: string; is_visible?: boolean; content: Content; settings?: { variant?: 'classic' | 'editorial' | 'spotlight' | 'canvas'; background?: string; alignment?: string; spacing?: string; anchor?: string; motion?: 'inherit' | 'none' | 'fade' | 'rise' | 'slide' | 'zoom'; motion_duration?: number; motion_delay?: number; motion_once?: boolean } | null };
 export type Seo = { title?: string; description?: string; image?: string; noindex?: boolean };
 export type PageData = { slug: string; title: string; locale: string; seo?: Seo | null; sections: Section[] };
 export type Settings = {

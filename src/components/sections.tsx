@@ -54,6 +54,27 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
+    if (section.settings?.variant === 'canvas') return <section {...props} className={`hero hero-canvas ${visual ? 'canvas-has-visual' : ''}`}>
+      <div className="container canvas-shell">
+        <div className="canvas-copy">
+          {content.eyebrow && <span className="eyebrow canvas-eyebrow"><i />{content.eyebrow}</span>}
+          <h1><AccentTitle text={content.title} accent={content.title_accent} /></h1>
+          {content.description && <p className="canvas-description">{content.description}</p>}
+          <Buttons buttons={content.buttons} context={context} />
+          {!!content.notes?.length && <div className="canvas-notes">{content.notes.map((note, i) => <span key={i}><Icon name="circlecheck" size={16} />{note.text}</span>)}</div>}
+        </div>
+        {visual && <div className="canvas-stage">
+          <div className="canvas-orbit" aria-hidden="true"><i /><i /><i /></div>
+          <div className="canvas-window">
+            {(content.preview_title || site.settings.brand?.name) && <div className="canvas-window-bar"><span className="canvas-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{content.preview_title || site.settings.brand?.name}</span><Icon name="shield" size={16} /></div>}
+            {content.image ? <Picture src={content.image} alt={content.image_alt || content.title} className="canvas-image" /> : content.preview_columns?.length ? <ProductPreview content={{ ...content, preview_badge: '', preview_badge_text: '' }} /> : null}
+            <Media url={content.video_url} title={content.title} />
+          </div>
+          {!!content.preview_metrics?.length && <div className="canvas-metrics">{content.preview_metrics.slice(0, 2).map((metric, i) => <div className={`canvas-metric canvas-metric-${i}`} key={i}><span className="canvas-metric-icon"><Icon name={metric.icon} size={22} /></span><div><span>{metric.label}</span><strong>{metric.value}</strong></div><span className="canvas-metric-bars" aria-hidden="true"><i /><i /><i /><i /><i /></span></div>)}</div>}
+          {content.preview_badge && <div className="canvas-badge"><span><Icon name="check" size={18} /></span><div><strong>{content.preview_badge}</strong>{content.preview_badge_text && <small>{content.preview_badge_text}</small>}</div></div>}
+        </div>}
+      </div>
+    </section>;
     return <section {...props} className={`hero ${visual ? 'hero-with-visual' : 'hero-compact'}`}>
       <div className="container hero-inner">{visual && <><div className="hero-atmosphere" aria-hidden="true"><i /><i /><i /></div><span className="hero-watermark" aria-hidden="true">{site.settings.brand?.name}</span></>}<div className="hero-copy">
         {content.eyebrow && <span className="eyebrow hero-eyebrow"><i />{content.eyebrow}</span>}
