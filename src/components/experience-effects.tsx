@@ -1,16 +1,22 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { MotionSettings } from '@/lib/types';
+import { motionOptions } from '@/lib/motion';
 
 /** Progressive enhancement only: all content is visible without JavaScript. */
-export function ExperienceEffects() {
+export function ExperienceEffects({ settings }: { settings?: MotionSettings }) {
   const marker = useRef<HTMLDivElement>(null);
+  const configuration = JSON.stringify(motionOptions(settings));
   useEffect(() => {
     const site = marker.current?.closest<HTMLElement>('.website');
     if (!site) return;
+    const options = JSON.parse(configuration) as ReturnType<typeof motionOptions>;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-    const revealSelector = '.section-heading, .solution-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main';
+    const small = window.matchMedia('(max-width: 767px)');
+    const disabled = () => !options.enabled || motion.matches || (!options.mobile && small.matches);
+    const revealSelector = '.section-heading, .solution-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main, .motion-marquee';
     const seen = new WeakSet<Element>();
     let observer: IntersectionObserver | undefined;
     let frame = 0, pointerFrame = 0, scanFrame = 0;
@@ -32,8 +38,9 @@ export function ExperienceEffects() {
       active.style.setProperty('--spot-x', `${(x + 1) * 50}%`); active.style.setProperty('--spot-y', `${(y + 1) * 50}%`);
     };
     const move = (event: PointerEvent) => {
-      if (motion.matches || !pointer.matches || event.pointerType === 'touch') return;
+      if (disabled() || !pointer.matches || event.pointerType === 'touch') return;
       const target = (event.target as Element).closest<HTMLElement>('.button, .solution-card, .feature-card, .price-card');
+      if (target?.closest('[data-section-motion="none"]') || (target?.matches('.button') ? !options.magnetic : !options.hover)) { resetPointer(); return; }
       if (target !== active) { resetPointer(); active = target; bounds = target?.getBoundingClientRect() || null; }
       if (!active) return;
       pointerX = event.clientX; pointerY = event.clientY;
@@ -45,7 +52,7 @@ export function ExperienceEffects() {
       site.style.setProperty('--reading-progress', distance > 0 ? String(Math.min(1, Math.max(0, window.scrollY / distance))) : '0');
       site.dataset.scrolled = String(window.scrollY > 20);
       const hero = site.querySelector<HTMLElement>('.hero');
-      if (hero && !motion.matches && pointer.matches) {
+      if (hero && !disabled() && options.parallax && pointer.matches && hero.dataset.sectionMotion !== 'none') {
         site.style.setProperty('--hero-scroll', `${Math.min(26, Math.max(0, -hero.getBoundingClientRect().top * .055))}px`);
       } else site.style.removeProperty('--hero-scroll');
     };
@@ -56,19 +63,21 @@ export function ExperienceEffects() {
         if (seen.has(node)) return;
         seen.add(node);
         const siblings = node.parentElement ? Array.from(node.parentElement.children) : [];
-        node.style.setProperty('--reveal-delay', `${Math.max(0, siblings.indexOf(node) % 4) * 65}ms`);
+        if (node.closest('[data-section-motion="none"]')) return;
+        node.style.setProperty('--reveal-delay', `${options.stagger ? Math.max(0, siblings.indexOf(node) % 4) * 65 : 0}ms`);
         node.classList.add('motion-reveal'); observer?.observe(node);
       });
     };
     const configure = () => {
       observer?.disconnect();
       resetPointer();
-      site.dataset.motion = motion.matches ? 'reduced' : 'full';
-      if (motion.matches || !('IntersectionObserver' in window)) return;
+      site.dataset.motion = disabled() ? 'reduced' : 'full';
+      if (disabled() || !('IntersectionObserver' in window)) return;
       observer = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+        const repeat = entry.target.closest('[data-section-index]')?.getAttribute('data-motion-once') === 'false';
+        if (!entry.isIntersecting) { if (repeat) entry.target.classList.remove('in-view'); return; }
         entry.target.classList.add('in-view');
-        observer?.unobserve(entry.target);
+        if (!repeat) observer?.unobserve(entry.target);
       }), { threshold: 0.08, rootMargin: '0px 0px -25px 0px' });
       // Reattach existing nodes when a visitor changes their motion preference.
       site.querySelectorAll('.motion-reveal:not(.in-view)').forEach(node => observer?.observe(node));
@@ -78,26 +87,33 @@ export function ExperienceEffects() {
     window.addEventListener('scroll', scroll, { passive: true });
     window.addEventListener('resize', scroll);
     motion.addEventListener('change', configure);
+    small.addEventListener('change', configure);
     pointer.addEventListener('change', resetPointer);
     site.addEventListener('pointermove', move, { passive: true });
     site.addEventListener('pointerleave', resetPointer);
     site.addEventListener('pointercancel', resetPointer);
     const mutation = new MutationObserver(records => {
+      records.filter(record => record.type === 'attributes').forEach(record => {
+        const root = record.target as Element;
+        const nodes = [root, ...root.querySelectorAll(revealSelector)];
+        nodes.forEach(node => { seen.delete(node); observer?.unobserve(node); node.classList.remove('in-view'); });
+      });
       records.forEach(record => record.removedNodes.forEach(node => {
         if (!(node instanceof Element)) return;
         observer?.unobserve(node);
         node.querySelectorAll('.motion-reveal').forEach(child => observer?.unobserve(child));
       }));
-      if (motion.matches || scanFrame || !records.some(record => Array.from(record.addedNodes).some(node => node instanceof Element))) return;
+      if (disabled() || scanFrame || !records.some(record => record.type === 'attributes' || Array.from(record.addedNodes).some(node => node instanceof Element))) return;
       scanFrame = requestAnimationFrame(scan);
     });
-    mutation.observe(site, { childList: true, subtree: true });
+    mutation.observe(site, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-section-motion', 'data-motion-once'] });
     const resize = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(scroll) : undefined;
     resize?.observe(site);
     return () => {
       observer?.disconnect(); resize?.disconnect(); mutation.disconnect(); resetPointer(); cancelAnimationFrame(frame); cancelAnimationFrame(scanFrame);
       window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll);
       motion.removeEventListener('change', configure);
+      small.removeEventListener('change', configure);
       pointer.removeEventListener('change', resetPointer);
       site.removeEventListener('pointermove', move); site.removeEventListener('pointerleave', resetPointer); site.removeEventListener('pointercancel', resetPointer);
       delete site.dataset.scrolled;
@@ -106,6 +122,6 @@ export function ExperienceEffects() {
       site.style.removeProperty('--reading-progress');
       site.style.removeProperty('--hero-scroll');
     };
-  }, []);
+  }, [configuration]);
   return <div ref={marker} className="reading-progress" aria-hidden="true" />;
 }

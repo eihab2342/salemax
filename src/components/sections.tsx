@@ -8,6 +8,9 @@ import { ProductPreview } from './product-preview';
 import { ContactForm } from './contact-form';
 import { StackingCards } from './stacking-cards';
 import { stackOffset } from '@/lib/stacking';
+import { motionOptions, revealAnimation } from '@/lib/motion';
+import { AnimatedNumber } from './animated-number';
+import { MotionMarquee } from './motion-marquee';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -34,14 +37,21 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const content = section.content || {};
   const items = content.items || [];
   const context = site.context;
+  const motion = motionOptions(site.settings.motion);
+  const animate = motion.enabled && section.settings?.motion !== 'none';
   const labels = site.settings.interface || {};
   const style: CSSProperties = {
+    ...{ '--reveal-animation': section.settings?.motion === 'inherit' ? undefined : revealAnimation(section.settings?.motion), '--motion-duration': section.settings?.motion_duration ? `${Math.max(250, Math.min(2000, section.settings.motion_duration))}ms` : undefined, '--section-delay': `${Math.max(0, Math.min(1200, section.settings?.motion_delay || 0))}ms` },
     backgroundColor: validColor(section.settings?.background),
     textAlign: ['start', 'center', 'end'].includes(section.settings?.alignment || '') ? section.settings?.alignment as CSSProperties['textAlign'] : undefined,
   };
   const id = section.settings?.anchor || `${section.type}-${index}`;
-  const props = { id, style, 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index };
+  const props = { id, style, 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
   const link = (item: Item) => siteHref(item.url, context);
+  if (section.type === 'marquee') {
+    if (!items.some(item => item.text)) return null;
+    return <section {...props} className="section marquee-section"><div className="container"><SectionHeading content={content} /></div><MotionMarquee content={content} enabled={animate && motion.marquee} locale={context.locale} /></section>;
+  }
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
     return <section {...props} className={`hero ${visual ? 'hero-with-visual' : 'hero-compact'}`}>
@@ -57,13 +67,13 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'stats') {
     if (!items.length) return null;
-    return <section {...props} className="stats-section"><div className="container"><SectionHeading content={content} /><div className="stats-row">{items.map((item, i) => <div key={i}><span className="stat-mark">{String(i + 1).padStart(2, '0')}</span><strong>{item.value}</strong><p>{item.label}</p></div>)}</div></div></section>;
+    return <section {...props} className="stats-section"><div className="container"><SectionHeading content={content} /><div className="stats-row">{items.map((item, i) => <div key={i}><span className="stat-mark">{String(i + 1).padStart(2, '0')}</span><AnimatedNumber value={item.value} locale={context.locale} enabled={animate && motion.counters} duration={section.settings?.motion_duration || motion.duration} mobile={motion.mobile} /><p>{item.label}</p></div>)}</div></div></section>;
   }
   if (section.type === 'features') {
     if (!items.length) return null;
     if ((!section.settings?.variant || section.settings.variant === 'classic') && content.layout !== 'bento') {
       const anchor = (item: Item, i: number) => item.anchor && /^[a-z][a-z0-9_-]*$/i.test(item.anchor) ? item.anchor : `${id}-card-${i + 1}`;
-      return <section {...props} className="section features-section features-stacked"><div className="container"><StackingCards count={items.length} intro={<>
+      return <section {...props} className="section features-section features-stacked"><div className="container"><StackingCards animate={animate} mobile={motion.mobile} count={items.length} intro={<>
         <SectionHeading content={content} />
         <ol className="stack-index">{items.map((item, i) => <li key={i}><a href={'#' + anchor(item, i)} aria-current={i === 0 ? 'step' : undefined}><span className="stack-index-number">{String(i + 1).padStart(2, '0')}</span><span>{item.tag || item.title}</span><Icon name="arrow" size={16} /></a></li>)}</ol>
       </>}>

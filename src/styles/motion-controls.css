@@ -1,0 +1,51 @@
+/* Validated CMS settings control existing and new effects, including their off states. */
+@media(prefers-reduced-motion:no-preference){
+ .website .motion-reveal.in-view{animation-name:var(--reveal-animation,salemax-rise);animation-duration:var(--motion-duration,700ms);animation-delay:calc(var(--reveal-delay,0ms) + var(--section-delay,0ms))}
+ .website .hero-copy>:is(.eyebrow,h1,.hero-description,.button-row,.hero-notes){animation-name:var(--reveal-animation,salemax-rise);animation-duration:var(--motion-duration,700ms)}
+ .website .hero-with-visual .product-window{animation-duration:calc(var(--motion-duration,700ms)*1.3)}
+ .website .floating-proof{animation-duration:calc(var(--motion-duration,700ms)*8)}
+ .website .hero-inner::after{animation-duration:calc(var(--motion-duration,700ms)*16)}
+ .website .hero-eyebrow>i{animation-duration:calc(var(--motion-duration,700ms)*5)}
+ .website :is(.product-panel,.mobile-nav:not([hidden]),.nav-dropdown-content,.faq-list details[open]>div){animation-duration:calc(var(--motion-duration,700ms)*.5)}
+ .website .button:hover{translate:calc(var(--motion-x,0)*5px*var(--motion-strength,1)) calc(var(--motion-y,0)*4px*var(--motion-strength,1))}
+ @keyframes salemax-rise{from{opacity:0;transform:translate3d(0,var(--motion-distance,28px),0)}to{opacity:1;transform:translate3d(0,0,0)}}
+ @keyframes salemax-fade{from{opacity:0}to{opacity:1}}
+ @keyframes salemax-slide{from{opacity:0;transform:translate3d(var(--motion-distance,28px),0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+ @keyframes salemax-zoom{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.website :is(.solution-card,.feature-card,.price-card):hover{transform:perspective(1400px) rotateX(calc(var(--motion-y,0)*-2deg*var(--motion-strength,1))) rotateY(calc(var(--motion-x,0)*2deg*var(--motion-strength,1))) translateY(calc(-6px*var(--motion-strength,1)))}}
+.website[data-effect-stagger=false] .hero-copy>*{animation-delay:var(--section-delay,0ms)!important}
+.website[data-reveal=none] .product-window{animation:none!important}
+.website[data-effect-hover=false] :is(.solution-card,.feature-card,.price-card):hover{transform:none!important;box-shadow:none}
+.website[data-effect-hover=false] :is(.solution-card,.feature-card,.price-card)::after{display:none}
+.website[data-effect-hover=false] .resource-card:hover :is(img,.resource-art-icon){transform:none;scale:1}
+.website[data-effect-magnetic=false] .button:hover{translate:none!important}
+.website[data-effect-sheen=false] .button::after{display:none}
+.website[data-effect-glow=false] .hero-inner::after{display:none}
+.website[data-effect-parallax=false] .hero-visual{translate:none!important}
+.website[data-effect-floating=false] .floating-proof{animation:none!important;translate:none!important}
+.website[data-effect-micro=false] :is(.product-panel,.mobile-nav,.nav-dropdown-content,.faq-list details>div){animation:none!important}
+.website[data-effect-micro=false] :is(.button>svg,.text-link>svg,.faq-list summary>i,.desktop-nav>a::after){transition:none!important;translate:none!important}
+.website[data-effect-progress=false] .reading-progress{display:none}
+.website[data-effect-enabled=false] *,.website[data-motion=reduced] *,[data-section-motion=none] *{animation:none!important;transition:none!important}
+.website[data-effect-enabled=false] :is(.button,.solution-card,.feature-card,.price-card):hover,.website[data-motion=reduced] :is(.button,.solution-card,.feature-card,.price-card):hover,[data-section-motion=none] :is(.button,.solution-card,.feature-card,.price-card):hover{transform:none!important;translate:none!important}
+.website[data-effect-enabled=false] .hero-visual,.website[data-motion=reduced] .hero-visual{translate:none!important}
+.website[data-effect-enabled=false] .button::after,.website[data-motion=reduced] .button::after,[data-section-motion=none] .button::after{display:none}
+.marquee-section{padding-block:35px}.motion-marquee{position:relative;padding:20px 0 38px;overflow:hidden;border-block:1px solid var(--line)}
+.motion-marquee-window{overflow:hidden}.motion-marquee-track{display:flex;width:max-content;direction:ltr;animation:salemax-marquee var(--marquee-duration,32s) linear infinite;animation-play-state:paused}
+.motion-marquee-group{display:flex;gap:52px;align-items:center;list-style:none;margin:0;padding:20px 52px 20px 0;flex-shrink:0}
+.motion-marquee-group li{display:flex;align-items:center;gap:30px;font-size:clamp(26px,4vw,58px);font-weight:600;white-space:nowrap;letter-spacing:-.03em}.motion-marquee-group svg{color:var(--primary);flex-shrink:0}
+.motion-marquee[data-running=true] .motion-marquee-track{animation-play-state:running}.motion-marquee[data-direction=right] .motion-marquee-track{animation-direction:reverse}
+.motion-marquee:hover .motion-marquee-track,.motion-marquee:focus-within .motion-marquee-track{animation-play-state:paused}
+.website .marquee-pause{position:absolute;inset:auto 24px 5px auto;background:var(--page-background);color:var(--ink);border:1px solid var(--line);border-radius:100px;font-size:11px;padding:5px 12px;display:flex;gap:10px;align-items:center}
+.motion-marquee[data-running=false] .motion-marquee-track{animation-play-state:paused}
+.motion-marquee[data-enabled=false] .motion-marquee-track,.website[data-motion=reduced] .motion-marquee-track{width:auto;animation:none!important;transform:none}
+.motion-marquee[data-enabled=false] .motion-marquee-group,.website[data-motion=reduced] .motion-marquee-group{flex-wrap:wrap;justify-content:center}
+.website[data-motion=reduced] .motion-marquee-group[aria-hidden=true]{display:none}
+.website[data-effect-marquee=false] .motion-marquee-track,[data-section-motion=none] .motion-marquee-track{animation:none}
+.website[data-effect-marquee=false] .motion-marquee-group[aria-hidden=true],[data-section-motion=none] .motion-marquee-group[aria-hidden=true]{display:none}
+.marquee-section[data-variant=editorial] .motion-marquee{background:var(--deep-surface);color:#fff;rotate:-2deg;border:0;margin-block:25px}
+.marquee-section[data-variant=spotlight] .motion-marquee-group li{border:1px solid var(--line);border-radius:100px;padding:20px 35px;background:var(--surface);font-size:clamp(20px,3vw,40px)}
+@keyframes salemax-marquee{to{transform:translateX(-50%)}}
+@media(max-width:767px){.website[data-effect-mobile=false] *{animation:none!important;transition:none!important}.website[data-effect-mobile=false] .reading-progress{display:none}.website[data-effect-mobile=false] .motion-marquee-group[aria-hidden=true]{display:none}.website[data-effect-mobile=false] .motion-marquee-track{width:auto}.website[data-effect-mobile=false] .motion-marquee-group{flex-wrap:wrap}.motion-marquee-group{gap:28px;padding-inline-end:28px}}
+@media(prefers-reduced-motion:reduce){.motion-marquee-track{animation:none!important;width:auto}.motion-marquee-group{flex-wrap:wrap}.motion-marquee-group[aria-hidden=true],.marquee-pause{display:none!important}}

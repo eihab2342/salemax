@@ -4,7 +4,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { canStackCards, overlapProgress, stackOffset } from '@/lib/stacking';
 
 /** Native sticky positioning; JS adds depth and ensures oversized CMS content stays readable. */
-export function StackingCards({ intro, children, count }: { intro: ReactNode; children: ReactNode; count: number }) {
+export function StackingCards({ intro, children, count, animate = true, mobile = true }: { intro: ReactNode; children: ReactNode; count: number; animate?: boolean; mobile?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function StackingCards({ intro, children, count }: { intro: ReactNode; ch
       heights = cards.map(card => card.offsetHeight);
       let offset = 0;
       offsets = heights.map(height => { const position = offset; offset += height + gap; return position; });
-      enabled = CSS.supports('position', 'sticky') && canStackCards(heights, window.innerHeight, base, step, motion.matches);
+      enabled = CSS.supports('position', 'sticky') && canStackCards(heights, window.innerHeight, base, step, motion.matches || !animate || (!mobile && window.innerWidth <= 767));
       element.dataset.stacking = enabled ? 'on' : 'off';
       if (!enabled) {
         faces.forEach(face => face?.style.removeProperty('--stack-progress'));
@@ -105,7 +105,7 @@ export function StackingCards({ intro, children, count }: { intro: ReactNode; ch
       sizeObserver?.disconnect(); visibilityObserver?.disconnect();
       faces.forEach(face => face?.style.removeProperty('--stack-progress'));
     };
-  }, [count]);
+  }, [count, animate, mobile]);
 
   return <div ref={root} className="stacked-features" data-stacking="off">
     <aside className="stack-intro">{intro}</aside>
