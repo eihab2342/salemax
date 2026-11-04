@@ -1,5 +1,5 @@
 export type ButtonData = { label?: string | null; url?: string | null; variant?: string | null };
-export type NavItem = ButtonData & { description?: string | null; children?: NavItem[] };
+export type NavItem = ButtonData & { description?: string | null; icon?: string | null; external?: boolean; hidden?: boolean; children?: NavItem[]; groups?: { label?: string; hidden?: boolean; items?: NavItem[] }[]; promo_title?: string; promo_description?: string; promo_image?: string; promo_label?: string; promo_url?: string; hide_promo?: boolean };
 export type Item = {
   title?: string | null; name?: string | null; label?: string | null; text?: string | null;
   description?: string | null; image?: string | null; alt?: string | null; icon?: string | null;
@@ -29,10 +29,11 @@ export type Settings = {
   motion?: MotionSettings;
   brand?: { name?: string; tagline?: string; logo?: string; favicon?: string; direction?: string };
   navigation?: { items?: NavItem[]; buttons?: ButtonData[] };
-  footer?: { description?: string; copyright?: string; columns?: { title?: string; links?: ButtonData[] }[] };
+  footer?: { layout?: 'directory' | 'classic'; title?: string; social_title?: string; hide_wordmark?: boolean; description?: string; copyright?: string; columns?: { title?: string; hidden?: boolean; links?: NavItem[] }[]; legal_links?: NavItem[] };
+  utilities?: { show_booking?: boolean; booking_label?: string; show_call?: boolean; call_label?: string; show_login?: boolean; login_label?: string; show_whatsapp?: boolean; whatsapp_label?: string; floating_position?: 'right' | 'left'; show_theme_toggle?: boolean; light_label?: string; dark_label?: string };
   contact?: { email?: string; phone?: string; whatsapp_url?: string; login_url?: string; booking_url?: string; address?: string };
   social?: { items?: (ButtonData & { icon?: string })[] };
-  theme?: { mode?: 'light' | 'dark'; primary_color?: string; secondary_color?: string; background_color?: string; text_color?: string; font_family?: string };
+  theme?: { mode?: 'light' | 'dark'; primary_color?: string; secondary_color?: string; background_color?: string; text_color?: string; font_family?: string; light_background_color?: string; light_text_color?: string; dark_background_color?: string; dark_text_color?: string };
   interface?: Record<string, string>;
 };
 export type FormField = { name: string; label: string; type: string; required: boolean; options?: string[] };

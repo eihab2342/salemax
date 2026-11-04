@@ -20,6 +20,10 @@ export function LivePreview({ initial, editorOrigin }: { initial: SiteData; edit
     const receive = (event: MessageEvent) => {
       if (event.origin !== editorOrigin || event.source !== window.parent) return;
       const message = event.data;
+      if (message?.type === 'salemax:chrome' && ['navigation', 'footer', 'contact', 'social', 'utilities'].includes(message.key) && message.value && typeof message.value === 'object' && !Array.isArray(message.value)) {
+        setSettings(previous => ({ ...previous, [message.key]: message.value }));
+        return;
+      }
       if (message?.type === 'salemax:motion' && message.value && typeof message.value === 'object') {
         const normalized = motionOptions(message.value);
         setSettings(previous => ({ ...previous, motion: { ...normalized, duration: String(normalized.duration) } }));
