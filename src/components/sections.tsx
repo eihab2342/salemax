@@ -11,6 +11,7 @@ import { stackOffset } from '@/lib/stacking';
 import { motionOptions, revealAnimation } from '@/lib/motion';
 import { AnimatedNumber } from './animated-number';
 import { MotionMarquee } from './motion-marquee';
+import { CardCollection } from './card-collection';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -46,8 +47,35 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
     textAlign: ['start', 'center', 'end'].includes(section.settings?.alignment || '') ? section.settings?.alignment as CSSProperties['textAlign'] : undefined,
   };
   const id = section.settings?.anchor || `${section.type}-${index}`;
-  const props = { id, style, 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
+  const props = { id, style, 'data-content-width': section.settings?.content_width || 'normal', 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
+  const widthProps = { 'data-content-width': section.settings?.content_width || 'normal' };
   const link = (item: Item) => siteHref(item.url, context);
+  const settings = section.settings || {};
+  if (settings.cards_layout && settings.cards_layout !== 'inherit' && ['features', 'solutions', 'resources', 'pricing', 'clients', 'partners', 'testimonials', 'team', 'gallery', 'contact', 'stats'].includes(section.type)) {
+    if (!items.length) return null;
+    const ordered = settings.reverse_cards ? [...items].reverse() : items;
+    const bounded = (value: number | undefined, fallback: number, min: number, max: number) => Number.isFinite(value) ? Math.max(min, Math.min(max, value!)) : fallback;
+    const collectionStyle = { ...style, '--card-columns': bounded(settings.columns, 3, 1, 4), '--card-tablet-columns': bounded(settings.tablet_columns, 2, 1, 3), '--card-mobile-columns': bounded(settings.mobile_columns, 1, 1, 2), '--card-gap': `${bounded(settings.card_gap, 24, 8, 64)}px`, '--card-padding': `${bounded(settings.card_padding, 28, 12, 64)}px`, '--card-radius': `${bounded(settings.card_radius, 24, 0, 48)}px`, '--card-width': `${bounded(settings.card_width, 380, 240, 640)}px` } as CSSProperties;
+    const intro = <><SectionHeading content={content} />{settings.cards_layout === 'stacked' && <ol className="stack-index">{ordered.map((item, i) => <li key={i}><a href={`#${id}-managed-${i}`}><span className="stack-index-number">{String(i + 1).padStart(2, '0')}</span><span>{item.tag || item.title || item.name || item.label}</span></a></li>)}</ol>}{section.type === 'resources' && labels.all_resources && <Link className="text-link" href={siteHref('/resources', context)!}>{labels.all_resources}<Icon name="arrow" /></Link>}</>;
+    return <section {...props} {...widthProps} style={collectionStyle} className="section managed-collection" data-cards-layout={settings.cards_layout} data-card-style={settings.card_style || 'outline'} data-image-position={settings.image_position || 'top'} data-image-ratio={settings.image_ratio || 'landscape'} data-card-type={section.type}>
+      <div className="container"><CardCollection intro={intro} settings={settings} labels={labels} animate={animate} mobile={motion.mobile} locale={context.locale}>
+        {ordered.map((item, i) => <div className={`managed-card ${item.highlighted ? 'highlighted' : ''}`} id={`${id}-managed-${i}`} key={i}>
+          <div className="managed-card-topline">{(item.tag || item.category || item.icon) && <span className="managed-card-tag"><Icon name={item.icon} size={17} />{item.tag || item.category}</span>}{settings.show_numbers && <span className="managed-card-number">{String(i + 1).padStart(2, '0')}<small> / {String(ordered.length).padStart(2, '0')}</small></span>}</div>
+          {(item.image || section.type === 'features') && <div className="managed-card-media">{section.type === 'features' ? <FeatureArt item={item} index={i} /> : <Picture src={item.image} alt={item.alt || item.name || item.title} />}</div>}
+          <div className="managed-card-copy">
+            {section.type === 'stats' ? <><AnimatedNumber value={item.value} locale={context.locale} enabled={animate && motion.counters} duration={motion.duration} mobile={motion.mobile} /><h3>{item.label}</h3></> : (item.title || item.name) && <h3>{link(item) ? <Link href={link(item)!}>{item.title || item.name}</Link> : item.title || item.name}</h3>}
+            {item.quote && <blockquote><Icon name="quote" size={25} />{item.quote}</blockquote>}
+            {item.description && <p>{item.description}</p>}
+            {(item.role || item.company) && <p className="managed-card-caption">{[item.role, item.company].filter(Boolean).join(' Â· ')}</p>}
+            {section.type === 'pricing' && <><div className="managed-price">{item.price}<small>{item.currency}</small></div><p>{item.period}</p><ul className="managed-features">{item.features?.map((feature, j) => <li key={j}><Icon name="check" size={17} />{feature.text}</li>)}</ul><Buttons buttons={[{ label: item.button_label, url: item.button_url, variant: item.highlighted ? 'primary' : 'outline' }]} context={context} /></>}
+            {item.video_url && <Media url={item.video_url} title={item.title} />}
+            {section.type === 'contact' && <div className="managed-contact">{item.address && <p>{item.address}</p>}{item.phone && <a href={'tel:' + item.phone.replace(/\s/g, '')}>{item.phone}</a>}{item.email && <a href={'mailto:' + item.email}>{item.email}</a>}{safeUrl(item.map_url) && <a className="text-link" href={safeUrl(item.map_url)}><Icon name="map" />{item.name}</a>}</div>}
+            {item.link_label && link(item) && <Link className="text-link" href={link(item)!}>{item.link_label}<Icon name="arrow" size={19} /></Link>}
+          </div>
+        </div>)}
+      </CardCollection></div>
+    </section>;
+  }
   if (section.type === 'marquee') {
     if (!items.some(item => item.text)) return null;
     return <section {...props} className="section marquee-section"><div className="container"><SectionHeading content={content} /></div><MotionMarquee content={content} enabled={animate && motion.marquee} locale={context.locale} /></section>;
@@ -123,7 +151,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
     return <section {...props} className="section faq-section"><div className="container faq-layout"><div><SectionHeading content={content} /><div className="faq-emblem" aria-hidden="true"><Icon name="messages" size={40} /><span>?</span></div></div><div className="faq-list">{items.map((item, i) => <details key={i} name={`faq-${index}`} open={i === 0}><summary><span>{item.question}</span><i><Icon name="plus" size={18} /></i></summary><div><p>{item.answer}</p></div></details>)}</div></div></section>;
   }
   if (section.type === 'cta') {
-    return <section {...props} className="cta-section"><div className="container"><div className="cta-box"><div className="cta-lines" aria-hidden="true"><span /><span /><span /><span /></div><div className="cta-spark" aria-hidden="true">✳</div><SectionHeading content={content} light /><Buttons buttons={content.buttons} context={context} /><Picture src={content.image} alt={content.title} /></div></div></section>;
+    return <section {...props} className="cta-section"><div className="container"><div className="cta-box"><div className="cta-lines" aria-hidden="true"><span /><span /><span /><span /></div><div className="cta-spark" aria-hidden="true">âœ³</div><SectionHeading content={content} light /><Buttons buttons={content.buttons} context={context} /><Picture src={content.image} alt={content.title} /></div></div></section>;
   }
   if (section.type === 'form') {
     const form = site.forms.find(form => form.slug === content.form_slug);
@@ -142,7 +170,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'testimonials') {
     if (!items.length) return null;
-    return <section {...props} className="section testimonials-section"><div className="container"><SectionHeading content={content} /><div className="testimonials-grid">{items.map((item, i) => <figure key={i}><Icon name="quote" size={32} /><blockquote>{item.quote}</blockquote><figcaption><Picture src={item.image} alt={item.name} /><div><strong>{item.name}</strong><small>{[item.role, item.company].filter(Boolean).join(' · ')}</small></div></figcaption></figure>)}</div></div></section>;
+    return <section {...props} className="section testimonials-section"><div className="container"><SectionHeading content={content} /><div className="testimonials-grid">{items.map((item, i) => <figure key={i}><Icon name="quote" size={32} /><blockquote>{item.quote}</blockquote><figcaption><Picture src={item.image} alt={item.name} /><div><strong>{item.name}</strong><small>{[item.role, item.company].filter(Boolean).join(' Â· ')}</small></div></figcaption></figure>)}</div></div></section>;
   }
   if (section.type === 'team') {
     if (!items.length) return null;
