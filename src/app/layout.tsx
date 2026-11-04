@@ -23,6 +23,7 @@ import '../styles/site-appearance.css';
 import '../styles/section-variants.css';
 import '../styles/brand-identity.css';
 import '../styles/bilingual.css';
+import '../styles/motion.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -1,0 +1,56 @@
+/* All content is visible by default. Motion progressively enhances actual CMS content. */
+.website .button{position:relative;isolation:isolate;overflow:hidden;transition:background .22s,border-color .22s,box-shadow .3s,translate .35s cubic-bezier(.2,.8,.2,1),scale .2s}
+.website .button>span,.website .button>svg{position:relative;z-index:1}
+.website .button::after{content:'';position:absolute;inset:-80% -20%;background:linear-gradient(115deg,transparent 35%,#ffffff26 50%,transparent 65%);translate:-120% 0;pointer-events:none}
+.website .button>svg{transition:translate .3s cubic-bezier(.2,.8,.2,1)}
+.website .button:active{scale:.97}
+.website .text-link>svg,.website .solution-link>svg{transition:translate .3s,background .3s}
+.website .hero-inner{position:relative}
+.website .hero-inner::after{content:'';position:absolute;width:min(45vw,600px);aspect-ratio:1;inset:5% auto auto -12%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--primary),transparent 86%),transparent 67%);pointer-events:none;z-index:0}
+.website .hero-compact .hero-copy{position:relative;z-index:1}
+.website .hero-copy>*,.website .hero-visual{position:relative}
+.website .solution-card,.website .feature-card,.website .price-card{position:relative;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .3s}
+.website .solution-card::after,.website .feature-card::after,.website .price-card::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(350px circle at var(--spot-x,50%) var(--spot-y,50%),color-mix(in srgb,var(--primary),transparent 93%),transparent 75%);pointer-events:none;opacity:0;transition:opacity .35s}
+.website .resource-art{overflow:hidden}.website .resource-art>img{transition:scale .8s cubic-bezier(.2,.8,.2,1)}
+.website .desktop-nav>a{position:relative}.website .desktop-nav>a::after{content:'';position:absolute;inset:auto 0 -7px;height:2px;background:var(--primary);scale:0 1;transform-origin:right center;transition:scale .3s}
+.website[dir=ltr] .desktop-nav>a::after{transform-origin:left center}
+.website .faq-list summary>i{transition:rotate .3s,background .3s}.website .faq-list details[open] summary>i{rotate:45deg}
+.website .footer-signature>span{transition:letter-spacing .6s,color .6s}
+@media(prefers-reduced-motion:no-preference){
+  .website .hero-copy{animation:none}
+  .website .hero-copy>:is(.eyebrow,h1,.hero-description,.button-row,.hero-notes){animation:salemax-rise .9s cubic-bezier(.16,1,.3,1) backwards}
+  .website .hero-copy>h1{animation-delay:90ms}.website .hero-copy>.hero-description{animation-delay:180ms}.website .hero-copy>.button-row{animation-delay:270ms}.website .hero-copy>.hero-notes{animation-delay:350ms}
+  .website .hero-inner::after{animation:salemax-glow 12s ease-in-out infinite alternate}
+  .website .hero-eyebrow>i{animation:salemax-pulse 3.5s ease-in-out infinite}
+  .website .hero-with-visual .floating-proof{animation:salemax-float 6s ease-in-out infinite}
+  .website .motion-reveal.in-view{animation:salemax-rise .85s cubic-bezier(.16,1,.3,1) var(--reveal-delay,0ms) backwards}
+  .website .product-panel{animation:salemax-panel .38s cubic-bezier(.2,.8,.2,1) backwards}
+  .website .mobile-nav:not([hidden]),.website .nav-dropdown[open] .nav-dropdown-content{animation:salemax-panel .25s ease-out}
+  .website .faq-list details[open]>div{animation:salemax-panel .3s ease-out}
+  .website .cta-box.in-view .cta-spark{animation:salemax-turn 1.3s cubic-bezier(.16,1,.3,1) backwards}
+  @keyframes salemax-rise{from{opacity:0;transform:translate3d(0,28px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+  @keyframes salemax-panel{from{opacity:.2;translate:0 10px}to{opacity:1;translate:0 0}}
+  @keyframes salemax-glow{from{translate:0 0;scale:1;opacity:.5}to{translate:18% 12%;scale:1.15;opacity:1}}
+  @keyframes salemax-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary),transparent 90%)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--primary),transparent 96%)}}
+  @keyframes salemax-float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+  @keyframes salemax-turn{from{rotate:-35deg;scale:.75}to{rotate:0deg;scale:1}}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .website .button:hover{translate:calc(var(--motion-x,0)*5px) calc(var(--motion-y,0)*4px);box-shadow:0 10px 28px #00000017}
+  .website .button:hover::after{translate:120% 0;transition:translate .8s cubic-bezier(.2,.8,.2,1)}
+  .website .button:hover>svg{translate:-3px -2px}.website[dir=ltr] .button:hover>svg{translate:3px -2px}
+  .website :is(.solution-card,.feature-card,.price-card):hover{transform:perspective(1400px) rotateX(calc(var(--motion-y,0)*-2deg)) rotateY(calc(var(--motion-x,0)*2deg)) translateY(-6px);box-shadow:0 20px 45px #0000000b}
+  .website :is(.solution-card,.feature-card,.price-card):hover::after{opacity:1}
+  .website .resource-card:hover .resource-art>img{scale:1.045}
+  .website .resource-card:hover .resource-art-icon{transform:rotate(-8deg) scale(1.06)}
+  .website .desktop-nav>a:hover::after{scale:1 1}
+  .website .text-link:hover>svg{translate:-4px 0}.website[dir=ltr] .text-link:hover>svg{translate:4px 0}
+  .website .footer-signature:hover>span{letter-spacing:-.045em;color:color-mix(in srgb,var(--primary),#fff 35%)}
+}
+@media(max-width:600px){.website .hero-inner::after{width:90vw}.website .motion-reveal.in-view{animation-delay:0ms;animation-duration:.65s}}
+@media(min-width:900px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.website .hero-visual{translate:0 var(--hero-scroll,0px)}}
+@media(prefers-reduced-motion:reduce){
+  .website :is(.motion-reveal,.hero-copy>*,.hero-inner::after,.hero-eyebrow>i,.floating-proof,.product-panel,.cta-spark,.faq-list details[open]>div){animation:none!important;translate:none!important}
+  .website :is(.button,.button::after,.button>svg,.solution-card,.feature-card,.price-card,.resource-art>img,.footer-signature>span){transition:none!important}
+  .website :is(.button,.solution-card,.feature-card,.price-card):hover{transform:none;translate:none}
+}
