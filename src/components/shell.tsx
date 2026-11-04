@@ -74,6 +74,9 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
         {(item.children?.length || item.groups?.length) ? <MenuPanel item={item} context={context} /> : null}
       </div>)}
       {settings.navigation?.buttons?.map((button, index) => <div key={index} onClick={() => setOpen(false)}><ButtonLink button={button} context={context} /></div>)}
+      {settings.utilities?.show_booking && siteHref(settings.contact?.booking_url, context) && <Link href={siteHref(settings.contact?.booking_url, context)!}><Icon name="calendar" />{settings.utilities.booking_label}</Link>}
+      {settings.utilities?.show_call && settings.contact?.phone && <a href={`tel:${settings.contact.phone.replace(/[^+\d]/g, '')}`}><Icon name="phone" />{settings.utilities.call_label || settings.contact.phone}</a>}
+      {settings.utilities?.show_login !== false && siteHref(settings.contact?.login_url, context) && <Link href={siteHref(settings.contact?.login_url, context)!}><Icon name="external" />{settings.utilities?.login_label || settings.brand?.name}</Link>}
     </nav>
   </div></header>;
 }
@@ -91,7 +94,7 @@ export function Footer({ settings, context }: { settings: Settings; context: Sit
     {!settings.footer?.hide_wordmark && settings.brand?.name && <div className="footer-signature" aria-hidden="true"><span>{settings.brand.name}</span><Icon name="arrow" size={90} /></div>}
     <div className="footer-bottom"><span>{settings.footer?.copyright}</span>
       <VisitorThemeToggle settings={settings} preview={context.preview} />
-      <div><span>{settings.footer?.social_title}</span><div className="social-links">{settings.social?.items?.filter(item => safeUrl(item.url)).map((item, index) => <Link key={index} href={safeUrl(item.url)!} aria-label={item.label || undefined}><Icon name={item.icon || 'globe'} size={18} /><span>{item.label}</span></Link>)}</div></div>
+      {settings.social?.items?.some(item => safeUrl(item.url)) && <div><span>{settings.footer?.social_title}</span><div className="social-links">{settings.social.items.filter(item => safeUrl(item.url)).map((item, index) => <Link key={index} href={safeUrl(item.url)!} aria-label={item.label || undefined}><Icon name={item.icon || 'globe'} size={18} /><span>{item.label}</span></Link>)}</div></div>}
       <div className="footer-legal">{settings.footer?.legal_links?.map((item, index) => <RichLink key={index} item={item} context={context} />)}</div>
       <a href="#top" className="back-top">{settings.interface?.back_to_top}<Icon name="arrow" size={16} /></a>
     </div>
