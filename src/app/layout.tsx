@@ -28,6 +28,7 @@ import '../styles/motion-controls.css';
 import '../styles/navigation.css';
 import '../styles/hero-canvas.css';
 import '../styles/card-collection.css';
+import '../styles/scrollbars.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
