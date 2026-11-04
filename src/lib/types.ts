@@ -20,7 +20,7 @@ export type Content = {
   preview_tabs?: { label?: string; icon?: string }[]; preview_metrics?: { label?: string; value?: string; icon?: string }[];
   preview_columns?: PreviewColumn[]; preview_badge?: string; preview_badge_text?: string;
 };
-export type Section = { type: string; content: Content; settings?: { background?: string; alignment?: string; spacing?: string; anchor?: string } | null };
+export type Section = { type: string; is_visible?: boolean; content: Content; settings?: { variant?: 'classic' | 'editorial' | 'spotlight'; background?: string; alignment?: string; spacing?: string; anchor?: string } | null };
 export type Seo = { title?: string; description?: string; image?: string; noindex?: boolean };
 export type PageData = { slug: string; title: string; locale: string; seo?: Seo | null; sections: Section[] };
 export type Settings = {

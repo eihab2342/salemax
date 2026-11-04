@@ -40,7 +40,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
     textAlign: ['start', 'center', 'end'].includes(section.settings?.alignment || '') ? section.settings?.alignment as CSSProperties['textAlign'] : undefined,
   };
   const id = section.settings?.anchor || `${section.type}-${index}`;
-  const props = { id, style, 'data-spacing': section.settings?.spacing || 'normal' };
+  const props = { id, style, 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index };
   const link = (item: Item) => siteHref(item.url, context);
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
@@ -61,7 +61,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'features') {
     if (!items.length) return null;
-    if (content.layout !== 'bento') {
+    if ((!section.settings?.variant || section.settings.variant === 'classic') && content.layout !== 'bento') {
       const anchor = (item: Item, i: number) => item.anchor && /^[a-z][a-z0-9_-]*$/i.test(item.anchor) ? item.anchor : `${id}-card-${i + 1}`;
       return <section {...props} className="section features-section features-stacked"><div className="container"><StackingCards count={items.length} intro={<>
         <SectionHeading content={content} />

@@ -12,7 +12,7 @@ export function ContactForm({ form, labels, preview }: { form: FormDefinition; l
   const status = useRef<HTMLDivElement>(null);
   const active = form.is_active !== false;
   async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); if (sending || !active) return;
+    event.preventDefault(); if (preview || sending || !active) return;
     const htmlData = new FormData(event.currentTarget);
     const data = Object.fromEntries(form.fields.map(field => [field.name, field.type === 'checkbox' ? htmlData.has(field.name) : String(htmlData.get(field.name) || '')]));
     setSending(true); setErrors({}); setMessage('');
@@ -47,8 +47,8 @@ export function ContactForm({ form, labels, preview }: { form: FormDefinition; l
         </div>;
       })}</div>
       <div className="honeypot" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
-      <button type="submit" className="button button-primary form-submit" disabled={sending || !active}><span>{sending ? labels.form_sending : form.submit_label}</span><Icon name={sending ? 'activity' : 'arrow'} size={19} /></button>
-      {!active && <p className="form-notice">{preview ? labels.preview_form_notice : labels.form_unavailable}</p>}
+      <button type="submit" className="button button-primary form-submit" disabled={preview || sending || !active}><span>{sending ? labels.form_sending : form.submit_label}</span><Icon name={sending ? 'activity' : 'arrow'} size={19} /></button>
+      {(preview || !active) && <p className="form-notice">{preview ? labels.preview_form_notice : labels.form_unavailable}</p>}
     </form>}
   </div>;
 }

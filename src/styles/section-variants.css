@@ -1,0 +1,80 @@
+/* Three layout families share the same CMS content and brand tokens. */
+[data-variant=editorial]{--variant-line:color-mix(in srgb,var(--ink),transparent 85%)}
+.hero[data-variant=editorial] .hero-inner{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:64px;padding-block:90px}
+.hero[data-variant=editorial] .hero-copy{text-align:start;max-width:none;margin:0}
+.hero[data-variant=editorial] h1{font-size:clamp(36px,4.5vw,70px)}
+.hero[data-variant=editorial] .hero-visual{width:100%;margin:0;transform:rotate(-3deg)}
+.hero[data-variant=editorial] .hero-notes,.hero[data-variant=editorial] .button-row{justify-content:flex-start}
+.hero[data-variant=editorial] .hero-watermark{display:none}
+.hero[data-variant=spotlight]{margin:24px;border-radius:36px;overflow:hidden;background:radial-gradient(ellipse at 80% 20%,color-mix(in srgb,var(--primary),transparent 80%),transparent 65%),var(--page-background)}
+.hero[data-variant=spotlight] .hero-inner{background:transparent;color:var(--ink)}
+.hero[data-variant=spotlight] .hero-description,.hero[data-variant=spotlight] .hero-notes,.hero[data-variant=spotlight] .hero-eyebrow{color:var(--ink)}
+.hero[data-variant=spotlight] .accent-text{color:var(--primary)}
+.hero[data-variant=spotlight] .button-primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.hero[data-variant=spotlight] .button-outline{color:var(--ink);border-color:var(--ink)}
+.hero[data-variant=spotlight] .hero-inner{display:flex;flex-direction:column-reverse;gap:48px;padding-block:65px}
+.hero[data-variant=spotlight] .hero-visual{max-width:950px;margin:0 auto;transform:perspective(1200px) rotateX(5deg)}
+.hero[data-variant=spotlight] .hero-copy{max-width:1000px;text-align:center;margin:auto}
+.hero[data-variant=spotlight] .hero-atmosphere,.hero[data-variant=spotlight] .hero-watermark{display:none}
+[data-variant=editorial] .features-bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+[data-variant=editorial] .feature-card{grid-column:auto;min-height:500px;display:flex;flex-direction:column;justify-content:space-between}
+[data-variant=editorial] .feature-art{width:100%;min-height:230px}
+[data-variant=spotlight] .features-bento{display:flex;flex-direction:column;gap:40px}
+[data-variant=spotlight] .feature-card{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:350px;padding:50px;border-radius:28px}
+[data-variant=spotlight] .feature-card:nth-child(even) .feature-art{grid-column:1;grid-row:1}
+[data-variant=spotlight] .feature-art{height:290px;width:100%}
+[data-variant=editorial] .solutions-grid,[data-variant=editorial] .resource-grid,[data-variant=editorial] .team-grid,[data-variant=editorial] .offices-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+[data-variant=spotlight] .solutions-grid,[data-variant=spotlight] .offices-grid{display:flex;flex-direction:column;gap:0}
+[data-variant=spotlight] .solution-card,[data-variant=spotlight] .offices-grid>article{display:grid;grid-template-columns:80px 1fr 1.2fr;align-items:center;gap:24px;border:0;border-bottom:1px solid color-mix(in srgb,var(--ink),transparent 85%);border-radius:0;background:transparent;padding:35px 0}
+[data-variant=spotlight] .solution-card>p{margin:0}[data-variant=spotlight] .solution-card .solution-link{grid-column:3;margin:0}
+[data-variant=editorial] .stats-row{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+[data-variant=editorial] .stats-row>div{border:1px solid var(--variant-line);border-radius:24px;padding:40px;text-align:start}
+[data-variant=spotlight] .stats-row{display:flex;flex-direction:column;gap:0}
+[data-variant=spotlight] .stats-row>div{width:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid color-mix(in srgb,var(--ink),transparent 80%);padding:25px 0}
+[data-variant=spotlight] .stats-row strong{font-size:clamp(55px,8vw,110px)}
+[data-variant=editorial] .faq-layout,[data-variant=editorial] .form-layout,[data-variant=editorial] .story-layout{grid-template-columns:1fr;max-width:920px;margin:auto}
+[data-variant=editorial] .faq-emblem,[data-variant=editorial] .form-aside-art{display:none}
+[data-variant=editorial] .faq-list{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+[data-variant=editorial] .faq-list>details{border:1px solid var(--variant-line);border-radius:18px;padding:14px 24px}
+[data-variant=spotlight] .faq-layout,[data-variant=spotlight] .form-layout{grid-template-columns:1fr 1.5fr;gap:60px;background:color-mix(in srgb,var(--primary),var(--page-background) 93%);padding:60px;border-radius:32px}
+[data-variant=spotlight] .faq-list>details{background:var(--page-background);border-radius:16px;padding:12px 24px;margin-bottom:12px}
+[data-variant=spotlight] .story-layout{grid-template-columns:1fr}
+[data-variant=spotlight] .story-layout>div{display:grid;grid-template-columns:repeat(2,1fr);gap:30px}
+[data-variant=spotlight] .story-step{border:1px solid color-mix(in srgb,var(--ink),transparent 85%);border-radius:22px;padding:30px}
+[data-variant=spotlight] .story-layout>div>img,[data-variant=spotlight] .story-layout>div>.prose-body{grid-column:1/-1}
+[data-variant=editorial] .cta-box{display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:65px;text-align:start;border-radius:0}
+[data-variant=editorial] .cta-box .section-heading{text-align:start;margin:0}
+[data-variant=editorial] .cta-spark{display:none}
+[data-variant=spotlight] .cta-box{background:var(--page-background);color:var(--ink);border:2px solid var(--primary);border-radius:100px 24px;padding:90px 60px}
+[data-variant=spotlight] .cta-box h2,[data-variant=spotlight] .cta-box p{color:var(--ink)}
+[data-variant=spotlight] .cta-lines{opacity:.2}
+[data-variant=editorial] .pricing-grid{grid-template-columns:1fr;gap:20px}
+[data-variant=editorial] .price-card{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:20px;align-items:center}
+[data-variant=editorial] .price-card ul{grid-column:3;grid-row:1/4;margin:0}
+[data-variant=spotlight] .pricing-grid{display:flex;align-items:center;gap:0;padding:30px 0}
+[data-variant=spotlight] .price-card{flex:1;border-radius:0;min-width:0}
+[data-variant=spotlight] .price-card.highlighted{transform:scale(1.06);z-index:1;border-radius:28px}
+[data-variant=editorial] .logos-grid{grid-template-columns:repeat(3,1fr);gap:0}
+[data-variant=editorial] .logos-grid>div{border:1px solid var(--variant-line);border-radius:0;padding:36px}
+[data-variant=spotlight] .logos-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+[data-variant=spotlight] .logos-grid>div{border-radius:100px;flex:0 1 220px;padding:28px;background:color-mix(in srgb,var(--primary),var(--page-background) 94%)}
+[data-variant=editorial] .testimonials-grid{grid-template-columns:1fr}
+[data-variant=editorial] .testimonials-grid>figure{display:grid;grid-template-columns:70px 1fr 200px;gap:25px;align-items:center;border-radius:0;border:0;border-block-end:1px solid var(--variant-line)}
+[data-variant=editorial] .testimonials-grid blockquote{font-size:26px;margin:0}
+[data-variant=spotlight] .testimonials-grid{grid-template-columns:1fr 1fr}
+[data-variant=spotlight] .testimonials-grid>figure:first-child{grid-column:1/-1;padding:65px;text-align:center;background:color-mix(in srgb,var(--primary),var(--page-background) 91%)}
+[data-variant=spotlight] .testimonials-grid>figure:first-child blockquote{font-size:clamp(24px,3vw,40px)}
+[data-variant=spotlight] .resource-grid,[data-variant=spotlight] .team-grid{grid-template-columns:repeat(3,1fr);gap:30px}
+[data-variant=spotlight] .resource-card:first-child,[data-variant=spotlight] .team-grid>article:first-child{grid-column:1/-1;display:grid;grid-template-columns:1.5fr 1fr;column-gap:50px;align-items:center}
+[data-variant=spotlight] .resource-card:first-child .resource-art,[data-variant=spotlight] .team-grid>article:first-child>img{grid-row:1/6;height:420px;width:100%}
+[data-variant=editorial] .gallery-grid{columns:2;display:block;column-gap:24px}
+[data-variant=editorial] .gallery-grid>figure{break-inside:avoid;margin:0 0 24px}
+[data-variant=editorial] .gallery-grid img{height:auto;aspect-ratio:auto}
+[data-variant=spotlight] .gallery-grid{grid-template-columns:repeat(3,1fr);gap:16px}
+[data-variant=spotlight] .gallery-grid>figure:first-child{grid-column:span 2;grid-row:span 2}
+[data-variant=spotlight] .gallery-grid img{height:100%;object-fit:cover}
+.text-section[data-variant=editorial] .prose{display:grid;grid-template-columns:1fr 1.5fr;gap:70px;max-width:1200px}
+.text-section[data-variant=spotlight] .prose{border-inline-start:6px solid var(--primary);padding:50px;background:color-mix(in srgb,var(--primary),var(--page-background) 95%);border-radius:0 28px 28px 0}
+.preview-selected{outline:2px solid var(--primary);outline-offset:-2px}
+@media(max-width:900px){.hero[data-variant=editorial] .hero-inner{grid-template-columns:1fr;gap:35px}.hero[data-variant=spotlight]{margin:12px;border-radius:24px}[data-variant=spotlight] .feature-card{padding:30px;gap:24px}[data-variant=spotlight] .faq-layout,[data-variant=spotlight] .form-layout{grid-template-columns:1fr;padding:30px}[data-variant=editorial] .testimonials-grid>figure{grid-template-columns:40px 1fr}[data-variant=editorial] .testimonials-grid figcaption{grid-column:2}[data-variant=editorial] .cta-box{grid-template-columns:1fr;padding:40px}.text-section[data-variant=editorial] .prose{grid-template-columns:1fr;gap:20px}}
+@media(max-width:600px){[data-variant=editorial] .features-bento,[data-variant=editorial] .solutions-grid,[data-variant=editorial] .resource-grid,[data-variant=editorial] .team-grid,[data-variant=editorial] .offices-grid,[data-variant=editorial] .faq-list,[data-variant=spotlight] .testimonials-grid,[data-variant=spotlight] .resource-grid,[data-variant=spotlight] .team-grid,[data-variant=spotlight] .story-layout>div{grid-template-columns:1fr}[data-variant=spotlight] .feature-card,[data-variant=spotlight] .resource-card:first-child,[data-variant=spotlight] .team-grid>article:first-child,[data-variant=editorial] .price-card{display:flex;flex-direction:column;align-items:stretch}[data-variant=spotlight] .solution-card,[data-variant=spotlight] .offices-grid>article{display:flex;flex-direction:column;align-items:flex-start}[data-variant=spotlight] .pricing-grid{flex-direction:column;gap:20px}[data-variant=spotlight] .price-card{width:100%;border-radius:24px}[data-variant=spotlight] .price-card.highlighted{transform:none}[data-variant=editorial] .logos-grid{grid-template-columns:repeat(2,1fr)}[data-variant=spotlight] .cta-box{padding:45px 25px;border-radius:40px 16px}[data-variant=spotlight] .testimonials-grid>figure:first-child{padding:30px}[data-variant=spotlight] .gallery-grid{grid-template-columns:1fr}[data-variant=spotlight] .gallery-grid>figure:first-child{grid-column:auto;grid-row:auto}.text-section[data-variant=spotlight] .prose{padding:25px}}

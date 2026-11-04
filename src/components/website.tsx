@@ -23,7 +23,7 @@ export function Website({ site }: { site: SiteData }) {
     <ExperienceEffects />
     {!site.context.preview && <VisitTracker locale={site.context.locale} />}
     <Header settings={site.settings} context={site.context} />
-    <main id="main-content">{!site.page.sections.some(section => section.type === 'hero') && <h1 className="visually-hidden">{site.page.title}</h1>}{site.page.sections.map((section, index) => <SectionRenderer key={`${section.type}-${index}`} section={section} index={index} site={site} />)}</main>
+    <main id="main-content">{!site.page.sections.some(section => section.type === 'hero') && <h1 className="visually-hidden">{site.page.title}</h1>}{site.page.sections.map((section, index) => section.is_visible === false ? null : <SectionRenderer key={`${section.type}-${index}`} section={section} index={index} site={site} />)}</main>
     <Footer settings={site.settings} context={site.context} />
     {site.context.preview && site.settings.interface?.preview_label && <div className="draft-indicator"><i />{site.settings.interface.preview_label}</div>}
   </div>;

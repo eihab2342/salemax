@@ -19,6 +19,7 @@ import '@fontsource/inter/600.css';
 import './globals.css';
 import '../styles/editorial.css';
 import '../styles/site-appearance.css';
+import '../styles/section-variants.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
