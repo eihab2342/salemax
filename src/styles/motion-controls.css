@@ -28,6 +28,7 @@
 .website[data-effect-micro=false] :is(.button>svg,.text-link>svg,.faq-list summary>i,.desktop-nav>a::after){transition:none!important;translate:none!important}
 .website[data-effect-progress=false] .reading-progress{display:none}
 .website[data-effect-enabled=false] *,.website[data-motion=reduced] *,[data-section-motion=none] *{animation:none!important;transition:none!important}
+.website[data-effect-enabled=false] *::before,.website[data-effect-enabled=false] *::after,.website[data-motion=reduced] *::before,.website[data-motion=reduced] *::after,[data-section-motion=none] *::before,[data-section-motion=none] *::after{animation:none!important;transition:none!important}
 .website[data-effect-enabled=false] :is(.button,.solution-card,.feature-card,.price-card):hover,.website[data-motion=reduced] :is(.button,.solution-card,.feature-card,.price-card):hover,[data-section-motion=none] :is(.button,.solution-card,.feature-card,.price-card):hover{transform:none!important;translate:none!important}
 .website[data-effect-enabled=false] .hero-visual,.website[data-motion=reduced] .hero-visual{translate:none!important}
 .website[data-effect-enabled=false] .button::after,.website[data-motion=reduced] .button::after,[data-section-motion=none] .button::after{display:none}
