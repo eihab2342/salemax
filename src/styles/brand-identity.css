@@ -1,6 +1,6 @@
 /* Ribbon mark: crimson accents, charcoal depth and silver surfaces.
    Every accent still follows the editable CMS theme tokens. */
-.website{--muted:color-mix(in srgb,var(--ink),transparent 38%);--soft-ink:color-mix(in srgb,var(--ink),transparent 25%);--line:color-mix(in srgb,var(--ink),transparent 88%)}
+.website{--deep-surface:#19191d;--muted:color-mix(in srgb,var(--ink),transparent 30%);--soft-ink:color-mix(in srgb,var(--ink),transparent 20%);--line:color-mix(in srgb,var(--ink),transparent 88%)}
 .brand-logo{height:54px;max-width:200px;width:auto;object-fit:contain}
 .site-footer .brand:has(.brand-logo),.website[data-site-theme=dark] .site-header .brand:has(.brand-logo){background:#fff;border-radius:12px;padding:3px 12px}
 .hero-with-visual .hero-inner{background:radial-gradient(ellipse at 25% 90%,color-mix(in srgb,var(--primary),transparent 77%),transparent 65%),var(--deep-surface)}
@@ -27,8 +27,12 @@
 .solutions-section,.faq-section{background:color-mix(in srgb,var(--secondary),var(--page-background) 78%)}
 .resource-art,.resource-art-2{background:color-mix(in srgb,var(--secondary),#fff 40%)}
 .resource-art-1{background:color-mix(in srgb,var(--primary),#fff 94%)}
-.cta-box{background:color-mix(in srgb,var(--secondary),#fff 38%);color:#171719}
-.cta-box .section-heading :is(h2,p){color:#171719}.cta-box .button-primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.website .cta-box{background:var(--deep-surface);color:#fff;border:1px solid #ffffff16}
+.website .cta-box .section-heading h2{color:#fff}.website .cta-box .section-heading p{color:#c9c9d1}
+.website .cta-box .eyebrow{color:#d0d0d8}.website .cta-box .accent-text{color:color-mix(in srgb,var(--primary),#fff 25%)}
+.website .cta-box .button-primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.website .cta-box .button-outline{background:transparent;border-color:#ffffff4d;color:#fff}
+.website .cta-lines{opacity:.15}.website .cta-spark{color:#ffffff0c}
 .site-footer :is(.footer-brand-block>p,.footer-columns a,.footer-tagline,.footer-bottom){color:#bcbcc4}.site-footer .footer-columns a:hover{color:#fff}.footer-tagline>i{background:var(--primary)}
 .site-footer .footer-signature{color:color-mix(in srgb,var(--primary),#fff 18%)}
 .hero[data-variant=spotlight] .hero-inner{background:transparent;color:var(--ink)}
