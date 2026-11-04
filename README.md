@@ -46,6 +46,12 @@ The dashboard's **معاينة الموقع** button saves the current draft and
 
 ## Configuration
 
+The published website sends minimal anonymous page-view events to Laravel for
+admin-only analytics. It stores a random browser identifier in localStorage and
+respects Do Not Track and Global Privacy Control. Local development and signed
+draft previews do not send analytics. Blocking storage or tracking can reduce
+counts; analytics failures never block the page.
+
 ### Production backend
 
 The deployed Laravel origin is:
