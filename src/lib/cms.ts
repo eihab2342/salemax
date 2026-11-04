@@ -3,8 +3,8 @@ import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import type { FormData, PageData, PreviewBundle, PreviewToken, Settings, SiteData } from './types';
 
-export const cmsOrigin = (process.env.CMS_ORIGIN || 'http://127.0.0.1:8011').replace(/\/$/, '');
-export const siteOrigin = (process.env.SITE_ORIGIN || 'http://127.0.0.1:3000').replace(/\/$/, '');
+export const cmsOrigin = (process.env.CMS_ORIGIN || 'https://mediumpurple-jay-763780.hostingersite.com').replace(/\/$/, '');
+export const siteOrigin = (process.env.SITE_ORIGIN || 'https://salemax-git-main-eihab2342-3039s-projects.vercel.app').replace(/\/$/, '');
 
 async function request<T>(path: string): Promise<T | null> {
   const response = await fetch(cmsOrigin + path, { cache: 'no-store', headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(10000) });

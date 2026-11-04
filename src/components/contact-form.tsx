@@ -17,7 +17,7 @@ export function ContactForm({ form, labels, preview }: { form: FormDefinition; l
     const data = Object.fromEntries(form.fields.map(field => [field.name, field.type === 'checkbox' ? htmlData.has(field.name) : String(htmlData.get(field.name) || '')]));
     setSending(true); setErrors({}); setMessage('');
     try {
-      const origin = (process.env.NEXT_PUBLIC_CMS_ORIGIN || 'http://127.0.0.1:8011').replace(/\/$/, '');
+      const origin = (process.env.NEXT_PUBLIC_CMS_ORIGIN || 'https://mediumpurple-jay-763780.hostingersite.com').replace(/\/$/, '');
       const response = await fetch(`${origin}/api/v1/forms/${encodeURIComponent(form.locale)}/${encodeURIComponent(form.slug)}/submissions`, {
         method: 'POST', credentials: 'omit', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ data, website: htmlData.get('website') || '' }), signal: AbortSignal.timeout(15000),
