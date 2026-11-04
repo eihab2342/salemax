@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/500.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
@@ -21,8 +22,10 @@ import '../styles/editorial.css';
 import '../styles/site-appearance.css';
 import '../styles/section-variants.css';
 import '../styles/brand-identity.css';
+import '../styles/bilingual.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ar" dir="rtl"><body>{children}</body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = (await headers()).get('x-site-locale') === 'en' ? 'en' : 'ar';
+  return <html lang={locale} dir={locale === 'en' ? 'ltr' : 'rtl'}><body>{children}</body></html>;
 }

@@ -1,0 +1,16 @@
+.site-language-toggle{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;white-space:nowrap;padding:9px 12px;border:1px solid var(--line);border-radius:100px;color:var(--ink)}
+.site-language-toggle:hover{background:color-mix(in srgb,var(--primary),var(--page-background) 95%);border-color:var(--primary)}
+.website[dir=ltr]{font-family:var(--site-font),Arial,sans-serif}
+.website[dir=ltr] :is(h1,h2,h3){letter-spacing:-.035em;line-height:1.2}
+.website[dir=ltr] :is(.hero-description,.section-heading>p,.prose-body){line-height:1.8}
+.website[dir=ltr] :is(.hero-copy,.feature-card-text,.stack-card-main,.section-heading,.solution-card,.footer-columns,.form-field){text-align:start}
+.website[dir=ltr] .hero-with-visual .hero-copy{ text-align:center }
+.website[dir=ltr] .hero[data-variant=editorial] .hero-copy{text-align:start}
+.website[dir=ltr] .hero h1{font-size:clamp(40px,5.5vw,80px)}
+.website[dir=ltr] .hero-compact h1{font-size:clamp(38px,4.5vw,66px)}
+.website[dir=ltr] .feature-card-text h3{font-size:clamp(25px,2.7vw,37px)}
+.website[dir=ltr] .contact-form-wrap,.website[dir=ltr] .product-window{direction:ltr}
+.website[dir=ltr] .footer-signature>svg{transform:scaleX(-1)}
+.website[dir=ltr] .draft-indicator{right:auto;left:20px}
+@media(max-width:1100px){.header-actions{gap:10px}.site-language-toggle{font-size:11px;padding:8px}}
+@media(max-width:600px){.site-language-toggle{font-size:10px;padding:7px 8px}.site-language-toggle svg{display:none}.website[dir=ltr] .hero h1{font-size:clamp(35px,9vw,49px)}.website[dir=ltr] .section-heading h2{font-size:32px}.website[dir=ltr] .header-cta{font-size:10px;gap:8px}.header-actions{gap:6px}}

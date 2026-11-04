@@ -16,7 +16,7 @@ export function Website({ site }: { site: SiteData }) {
     '--primary': validColor(theme?.primary_color), '--secondary': validColor(theme?.secondary_color),
     '--page-background': validColor(theme?.background_color) || (theme?.mode === 'dark' ? '#141416' : undefined), '--ink': validColor(theme?.text_color) || (theme?.mode === 'dark' ? '#f1f1f3' : undefined),
     '--on-primary': luminance > .179 ? '#171719' : '#ffffff',
-    '--site-font': font === 'Cairo' ? 'Cairo, var(--font-arabic)' : font === 'Tajawal' ? 'Tajawal, var(--font-arabic)' : font === 'Inter' ? 'Inter, var(--font-latin)' : 'var(--font-arabic)',
+    '--site-font': font === 'Cairo' ? 'Cairo, var(--font-arabic)' : font === 'Tajawal' ? 'Tajawal, var(--font-arabic)' : font === 'Inter' ? 'Inter, var(--font-latin)' : site.context.locale === 'en' ? 'var(--font-latin)' : 'var(--font-arabic)',
   } as CSSProperties;
   return <div id="top" className="website" data-site-theme={theme?.mode === 'dark' ? 'dark' : 'light'} lang={site.context.locale} dir={site.settings.brand?.direction === 'ltr' ? 'ltr' : 'rtl'} style={styles}>
     <a className="skip-link" href="#main-content">{site.settings.interface?.skip_link}</a>

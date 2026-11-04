@@ -24,6 +24,7 @@ export function siteHref(value: string | null | undefined, context: SiteContext)
     url.searchParams.set('expires', context.token.expires);
     url.searchParams.set('signature', context.token.signature);
   } else if (context.locale !== 'ar') url.searchParams.set('lang', context.locale);
+  else url.searchParams.delete('lang');
   return url.pathname + url.search + url.hash;
 }
 

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { siteHref, safeUrl } from '@/lib/links';
 import type { Settings, SiteContext } from '@/lib/types';
 import { BrandMark, ButtonLink } from './ui';
@@ -11,6 +12,11 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
   const [open, setOpen] = useState(false);
   const items = settings.navigation?.items || [];
   const labels = settings.interface || {};
+  const pathname = usePathname();
+  const language = context.locale === 'ar' ? 'en' : 'ar';
+  // Preview signatures are locale-specific and must never be reused across languages.
+  const languagePath = pathname.replace(/^\/preview\/?/, '/');
+  const languageHref = (languagePath === '/home' ? '/' : languagePath) + (language === 'en' ? '?lang=en' : '');
   useEffect(() => {
     const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false); };
     window.addEventListener('keydown', escape); return () => window.removeEventListener('keydown', escape);
@@ -29,6 +35,7 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
       </details> : <Link href={siteHref(item.url, context) || '#'} key={index}>{item.label}</Link>)}
     </nav>
     <div className="header-actions">
+      <Link href={languageHref} className="site-language-toggle" lang={language} hrefLang={language} aria-label={language === 'en' ? 'Switch to English' : 'التبديل إلى العربية'}><Icon name="globe" size={16} /><span>{language === 'en' ? 'English' : 'العربية'}</span></Link>
       {settings.contact?.login_url && <Link href={safeUrl(settings.contact.login_url) || '#'} className="login-link"><Icon name="external" size={15} />{settings.brand?.name}</Link>}
       {settings.navigation?.buttons?.[0] && <ButtonLink button={settings.navigation.buttons[0]} context={context} className="header-cta" />}
       <button className="menu-toggle" aria-label={open ? labels.close_label : labels.menu_label} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}><Icon name={open ? 'close' : 'menu'} size={24} /></button>

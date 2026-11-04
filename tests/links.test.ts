@@ -18,6 +18,7 @@ test('development preview never inserts its server-only token into ordinary link
   assert.equal(siteHref('/features', { locale: 'ar', preview: true }), '/features');
   assert.equal(siteHref('/features', { locale: 'en', preview: false }), '/features?lang=en');
   assert.equal(siteHref('/demo?source=home#request', { locale: 'en', preview: false }), '/demo?source=home&lang=en#request');
+  assert.equal(siteHref('/demo?lang=en&source=home#request', { locale: 'ar', preview: false }), '/demo?source=home#request');
 });
 test('style colors accept only six-digit hex values', () => {
   assert.equal(validColor('#f0643b'), '#f0643b');

@@ -10,7 +10,7 @@ export function pageMetadata(site: SiteData): Metadata {
   const description = site.page.seo?.description;
   return {
     title, description, metadataBase: new URL(siteOrigin),
-    alternates: { canonical: path + (site.context.locale === 'en' ? '?lang=en' : '') },
+    alternates: { canonical: path + (site.context.locale === 'en' ? '?lang=en' : ''), languages: { ar: path, en: path + '?lang=en', 'x-default': path } },
     robots: site.context.preview || site.page.seo?.noindex ? { index: false, follow: false } : { index: true, follow: true },
     icons: site.settings.brand?.favicon ? { icon: site.settings.brand.favicon } : undefined,
     openGraph: { title, description, type: 'website', locale: site.context.locale === 'ar' ? 'ar_EG' : 'en_US', siteName: site.settings.brand?.name, images: image ? [image] : undefined },
