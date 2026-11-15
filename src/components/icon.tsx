@@ -3,7 +3,7 @@ import {
   Target, MessagesSquare, BriefcaseBusiness, Compass, HeartHandshake, Workflow,
   CalendarDays, Check, CircleCheck, Sparkles, ShieldCheck, LayoutDashboard,
   Search, MoreHorizontal, Plus, Bell, MousePointer2, TrendingUp, Mail, Phone,
-  MapPin, ChevronDown, X, Menu, ExternalLink, Play, Quote, Globe, ShoppingCart, Code2, Smartphone, type LucideIcon,
+  MapPin, ChevronDown, X, Menu, ExternalLink, Play, Quote, Globe, ShoppingCart, Code2, Smartphone, Instagram, type LucideIcon,
 } from 'lucide-react';
 
 const icons: Record<string, LucideIcon> = {
@@ -15,7 +15,7 @@ const icons: Record<string, LucideIcon> = {
   plus: Plus, bell: Bell, cursor: MousePointer2, trend: TrendingUp, mail: Mail,
   phone: Phone, map: MapPin, down: ChevronDown, close: X, menu: Menu, external: ExternalLink,
   play: Play, quote: Quote, globe: Globe, shoppingcart: ShoppingCart,
-  code: Code2, layout: LayoutDashboard, smartphone: Smartphone,
+  code: Code2, layout: LayoutDashboard, smartphone: Smartphone, instagram: Instagram,
 };
 export function Icon({ name, size = 20, className = '' }: { name?: string | null; size?: number; className?: string }) {
   const Component = icons[name || ''] || Layers3;
