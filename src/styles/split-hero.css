@@ -9,6 +9,10 @@
 /* Floating, rounded navigation across the site, including pages without a full-height hero. */
 .website{display:flow-root}
 .website .compact-header{width:min(1500px,calc(100% - 64px));margin:20px auto -96px;top:20px;border:1px solid var(--line);border-radius:50px;background:var(--page-background);box-shadow:0 3px 7px #00000010}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ .website .compact-header,.website[data-site-theme=dark] .compact-header{background:color-mix(in srgb,var(--page-background) 72%,transparent);-webkit-backdrop-filter:blur(22px) saturate(145%);backdrop-filter:blur(22px) saturate(145%);border-color:color-mix(in srgb,var(--ink) 11%,transparent);box-shadow:0 5px 24px #0000000b,inset 0 1px 0 #ffffff70}
+}
+@media(prefers-reduced-transparency:reduce),(forced-colors:active){.website .compact-header,.website[data-site-theme=dark] .compact-header{background:var(--page-background);-webkit-backdrop-filter:none;backdrop-filter:none}}
 .compact-header .header-inner{width:calc(100% - 48px);height:74px;max-width:none}.compact-header .header-cta{border-radius:50px}.compact-header .brand-logo{height:42px}.compact-header .nav-dropdown .nav-panel{top:calc(100% + 17px)}
 .website>main{padding-top:116px}.website:has(>main>.cinematic-hero:first-child)>main,.website:has(>main>.split-hero:first-child)>main{padding-top:0}.cinematic-content{padding-top:145px;min-height:clamp(650px,86svh,900px)}
 @media(max-width:1100px){.website .compact-header{width:calc(100% - 36px);margin:16px auto -82px;top:16px}.compact-header .header-inner{height:66px;width:calc(100% - 36px)}.website>main{padding-top:100px}.split-hero-layout{gap:30px}.split-hero h1,.website[dir=ltr] .split-hero h1,.website[dir=rtl] .split-hero h1{font-size:38px}.split-hero-description{font-size:14px}.split-hero-fallback{min-height:420px}.compact-header .mobile-nav:not([hidden]){top:calc(100% + 9px);border-radius:16px}}
