@@ -14,6 +14,8 @@ export type PreviewColumn = { title?: string; color?: string; cards?: { name?: s
 export type Content = {
   layout?: 'stacked' | 'bento' | null;
   direction?: 'left' | 'right'; speed?: 'slow' | 'normal' | 'fast';
+  autoplay?: boolean; pause_label?: string; play_label?: string;
+  slide_width?: 'compact' | 'normal' | 'wide'; slide_ratio?: 'wide' | 'landscape' | 'square' | 'portrait'; image_fit?: 'contain' | 'cover';
   title?: string | null; title_accent?: string | null; eyebrow?: string | null;
   description?: string | null; body?: string | null; image?: string | null; image_alt?: string | null;
   video_url?: string | null; buttons?: ButtonData[]; notes?: { text?: string }[]; items?: Item[];

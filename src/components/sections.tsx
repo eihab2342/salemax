@@ -12,6 +12,7 @@ import { motionOptions, revealAnimation } from '@/lib/motion';
 import { AnimatedNumber } from './animated-number';
 import { MotionMarquee } from './motion-marquee';
 import { CardCollection } from './card-collection';
+import { ProjectShowcase } from './project-showcase';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -51,6 +52,13 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const widthProps = { 'data-content-width': section.settings?.content_width || 'normal' };
   const link = (item: Item) => siteHref(item.url, context);
   const settings = section.settings || {};
+  if (section.type === 'gallery' && settings.variant === 'spotlight') {
+    if (!context.preview && !items.some(item => mediaUrl(item.image))) return null;
+    return <section {...props} className="section project-showcase-section">
+      <div className="container"><SectionHeading content={content} /></div>
+      <ProjectShowcase content={content} context={context} enabled={animate} mobile={motion.mobile} />
+    </section>;
+  }
   if (settings.cards_layout && settings.cards_layout !== 'inherit' && ['features', 'solutions', 'resources', 'pricing', 'clients', 'partners', 'testimonials', 'team', 'gallery', 'contact', 'stats'].includes(section.type)) {
     if (!items.length) return null;
     const ordered = settings.reverse_cards ? [...items].reverse() : items;
