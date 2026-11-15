@@ -9,7 +9,7 @@ export function ServiceGrid({ content, context }: { content: Content; context: S
   const headerLink = siteHref(content.header_link_url, context);
   const number = (value: string | undefined, fallback: number, allowed: number[]) => allowed.includes(Number(value)) ? Number(value) : fallback;
   const style = { '--service-columns': number(content.grid_columns, 4, [2, 3, 4]), '--service-tablet-columns': number(content.grid_tablet_columns, 2, [1, 2, 3]), '--service-mobile-columns': number(content.grid_mobile_columns, 1, [1, 2]), '--service-gap': `${number(content.grid_gap, 32, [16, 24, 32, 48])}px` } as CSSProperties;
-  return <div className="service-grid-layout" style={style} data-image-fit={content.image_fit || 'cover'}>
+  return <div className="service-grid-layout" style={style} data-mobile-columns={number(content.grid_mobile_columns, 1, [1, 2])} data-image-fit={content.image_fit || 'cover'}>
     <div className="service-grid-heading">
       <SectionHeading content={{ ...content, description: undefined }} />
       {headerLink && content.header_link_label && <Link href={headerLink} className="service-grid-about">{content.header_link_label}<Icon name="arrow" size={21} /></Link>}
