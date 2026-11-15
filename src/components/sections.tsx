@@ -10,6 +10,7 @@ import { ProjectShowcase } from './project-showcase';
 import { ProjectStack } from './project-stack';
 import { ServiceGrid } from './service-grid';
 import { BenefitsStack } from './benefits-stack';
+import { ProjectDetail } from './project-detail';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -37,6 +38,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const id = section.settings?.anchor || `${section.type}-${index}`;
   const props = { id, style, 'data-content-width': section.settings?.content_width || 'normal', 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
   const settings = section.settings || {};
+  if (section.type === 'project_detail') return <section {...props} className="project-detail"><ProjectDetail content={content} context={context} /></section>;
   if (section.type === 'benefits') {
     if (!items.length) return null;
     return <section {...props} style={{ ...style, '--benefit-surface': validColor(content.surface_color) || '#101012', '--benefit-ink': validColor(content.ink_color) || '#ffffff', '--benefit-accent': validColor(content.accent_color) || '#ff7199' } as CSSProperties} className="section benefits-section"><div className="container"><BenefitsStack content={content} enabled={animate} mobile={motion.mobile} /></div></section>;
