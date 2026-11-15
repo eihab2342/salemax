@@ -5,3 +5,19 @@
 @media(max-width:767px){.project-stack{padding-block:50px}.project-stack>.container{width:calc(100% - 28px)}.project-stack-heading{grid-template-columns:1fr;gap:18px;margin-bottom:32px}.project-stack-heading .section-heading h2{font-size:30px}.project-stack-heading>p{font-size:14px}.project-stack-heading>.button-row{margin:0}.project-stack .project-stack-face{grid-template-columns:1fr;padding:25px 22px;gap:25px;border-radius:22px;min-height:0}.project-card-media{height:300px;min-height:0;grid-row:2}.project-card-logo{width:65px}.project-card-copy h3{font-size:22px;margin-bottom:14px}.project-card-category{margin-bottom:13px}.project-card-copy p{font-size:13px;line-height:1.85}.project-card-button{margin-top:0;font-size:12px;min-height:41px}.project-stack .stacked-features{--stack-top:94px}.project-stack .feature-stack{gap:24px}.project-card-image-empty{min-height:200px}}
 @media(prefers-reduced-motion:reduce){.project-stack .stack-card-face{transform:none!important;filter:none!important}}
 .project-card-media:empty{display:none}.project-stack-face:not(:has(.project-card-media>*)){grid-template-columns:1fr}
+/* Keep the whole deck within a phone viewport, including every exposed card edge. */
+@media(max-width:767px){
+  .project-stack .stacked-features{--stack-step:12px}
+  .project-stack .project-stack-face{
+    max-height:calc(100svh - var(--stack-top) - var(--project-stack-last-offset,3)*var(--stack-step) - 32px);
+    overflow:auto;
+    padding:20px 18px;
+    gap:16px;
+    scrollbar-width:thin;
+  }
+  .project-stack .project-card-media{height:clamp(130px,25svh,210px);flex-shrink:0}
+  .project-stack .project-card-image-empty{min-height:120px}
+  .project-stack .project-card-body{gap:14px}
+  .project-stack .project-card-category{font-size:10px;margin-bottom:10px}
+  .project-stack .project-card-copy h3{font-size:20px;line-height:1.5;margin-bottom:10px}
+}

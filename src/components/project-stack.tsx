@@ -21,7 +21,7 @@ export function ProjectStack({ content, context, enabled, mobile }: { content: C
   if (demo) items = [0, 1, 2].map(i => ({ title: en ? `Project card preview ${i + 1}` : `معاينة كارت المشروع ${i + 1}`, category: en ? 'Preview only' : 'معاينة فقط', description: en ? 'Add the project name, description, logo, image and details link from this section’s Content tab.' : 'أضف اسم المشروع ووصفه وشعاره وصورته ورابط التفاصيل من تبويب المحتوى في هذا القسم.' }));
   const step = ['12', '20', '28', '36'].includes(content.stack_step || '') ? Number(content.stack_step) : 20;
   const intro = <div className="project-stack-heading"><SectionHeading content={{ ...content, description: undefined }} /><Buttons buttons={content.buttons} context={context} />{content.description && <p>{content.description}</p>}{demo && <p className="project-stack-preview-note">{en ? 'These are layout previews, not published projects. Replace them by adding your real projects.' : 'هذه معاينة للتصميم فقط وليست مشاريع منشورة. أضف مشاريعكم الفعلية لإظهار القسم للزوار.'}</p>}</div>;
-  return <div className="project-stack-deck" style={{ '--project-stack-step': `${step}px` } as CSSProperties}>
+  return <div className="project-stack-deck" style={{ '--project-stack-step': `${step}px`, '--project-stack-last-offset': stackOffset(items.length - 1) } as CSSProperties}>
     <StackingCards intro={intro} count={items.length} animate={enabled} mobile={mobile}>
       {items.map((item, index) => {
         const color = validColor(item.background || undefined), image = imageUrl(item.image), logo = imageUrl(item.logo), href = siteHref(item.url, context);
