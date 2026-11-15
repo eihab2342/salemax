@@ -13,6 +13,7 @@ export type Item = {
 };
 export type PreviewColumn = { title?: string; color?: string; cards?: { name?: string; description?: string; tag?: string; initials?: string }[] };
 export type Content = {
+  banner_titles?: boolean;
   category?: string; back_label?: string; back_url?: string;
   technologies_title?: string; technologies_description?: string; technologies?: Item[];
   blocks?: { title?: string; description?: string; image?: string; alt?: string; image_side?: 'start' | 'end'; points?: { text?: string }[] }[];

@@ -11,6 +11,7 @@ import { ProjectStack } from './project-stack';
 import { ServiceGrid } from './service-grid';
 import { BenefitsStack } from './benefits-stack';
 import { ProjectDetail } from './project-detail';
+import { WorkShowcase } from './work-showcase';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -38,6 +39,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const id = section.settings?.anchor || `${section.type}-${index}`;
   const props = { id, style, 'data-content-width': section.settings?.content_width || 'normal', 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
   const settings = section.settings || {};
+  if (section.type === 'work_showcase') return <section {...props} className="section work-showcase-section"><div className="container"><WorkShowcase content={content} context={context} /></div></section>;
   if (section.type === 'project_detail') return <section {...props} className="project-detail"><ProjectDetail content={content} context={context} /></section>;
   if (section.type === 'benefits') {
     if (!items.length) return null;
