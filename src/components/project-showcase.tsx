@@ -14,6 +14,7 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
   const [hovering, setHovering] = useState(false);
   const [focused, setFocused] = useState(false);
   const [touching, setTouching] = useState(false);
+  const [copies, setCopies] = useState(2);
   const en = context.locale === 'en';
   const running = allowed && !paused && !hovering && !focused && !touching;
 
@@ -30,8 +31,9 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
     if (!node || !group || !running) return;
     let frame = 0, previous = 0, width = group.getBoundingClientRect().width;
     let position = node.scrollLeft, visible = true;
-    const observer = new ResizeObserver(() => { width = group.getBoundingClientRect().width; position = node.scrollLeft; });
-    observer.observe(group);
+    const measure = () => { width = group.getBoundingClientRect().width; position = node.scrollLeft; if (width > 0) setCopies(Math.max(1, Math.ceil(node.clientWidth / width))); };
+    const observer = new ResizeObserver(measure);
+    observer.observe(group); observer.observe(node); measure();
     const intersection = new IntersectionObserver(entries => { visible = entries[0]?.isIntersecting ?? true; previous = 0; });
     intersection.observe(node);
     const velocity = (content.speed === 'fast' ? 65 : content.speed === 'slow' ? 22 : 40) * (content.direction === 'right' ? -1 : 1);
@@ -48,7 +50,7 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
   }, [running, content.speed, content.direction, items.length]);
 
   if (!items.length) return context.preview ? <div className="container project-showcase-empty">{en ? 'Add project images from this section’s Content tab to display the slider.' : 'أضف صور المشاريع من تبويب المحتوى في هذا القسم لعرض السلايدر.'}</div> : null;
-  const group = (duplicate: boolean) => <div className="project-showcase-group" ref={duplicate ? undefined : firstGroup} aria-hidden={duplicate || undefined}>
+  const group = (duplicate: boolean, copy = 0) => <div className="project-showcase-group" key={duplicate ? `copy-${copy}` : 'original'} ref={duplicate ? undefined : firstGroup} aria-hidden={duplicate || undefined}>
     {items.map((item, index) => {
       const href = siteHref(item.url, context);
       const image = <img src={safeUrl(item.image)} alt={duplicate ? '' : item.alt || item.title || (en ? `Project ${index + 1}` : `مشروع ${index + 1}`)} loading="lazy" draggable={false} />;
@@ -63,7 +65,7 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
       onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }}
       onTouchStart={() => setTouching(true)} onTouchEnd={() => { interactionUntil.current = performance.now() + 2500; setTouching(false); }} onTouchCancel={() => setTouching(false)}
       onWheel={() => { interactionUntil.current = performance.now() + 1500; }}>
-      <div className="project-showcase-track">{group(false)}{allowed && group(true)}</div>
+      <div className="project-showcase-track">{group(false)}{allowed && Array.from({ length: copies }, (_, index) => group(true, index))}</div>
     </div>
     {allowed && <div className="container project-showcase-controls"><button type="button" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? content.play_label || (en ? 'Play slider' : 'تشغيل السلايدر') : content.pause_label || (en ? 'Pause slider' : 'إيقاف السلايدر')}<span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span></button></div>}
   </div>;
