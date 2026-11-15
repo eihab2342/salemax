@@ -16,8 +16,8 @@ import { CardCollection } from './card-collection';
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
 }
-function Picture({ src, alt, className = '' }: { src?: string | null; alt?: string | null; className?: string }) {
-  const url = mediaUrl(src); return url ? <img src={url} alt={alt || ''} className={className} loading="lazy" /> : null;
+function Picture({ src, alt, className = '', priority = false }: { src?: string | null; alt?: string | null; className?: string; priority?: boolean }) {
+  const url = mediaUrl(src); return url ? <img src={url} alt={alt || ''} className={className} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} /> : null;
 }
 function Media({ url, title }: { url?: string | null; title?: string | null }) {
   const src = mediaUrl(url); if (!src) return null;
@@ -83,26 +83,26 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
-    if (settings.variant === 'spotlight') return <section {...props} className="hero agency-hero">
-      <div className="container agency-hero-inner">
-        <div className="agency-hero-copy">
-          {content.eyebrow && <span className="eyebrow agency-hero-eyebrow"><i />{content.eyebrow}</span>}
+    if (settings.variant === 'spotlight') {
+      const metrics = content.preview_metrics?.filter(metric => metric.label || metric.value) || [];
+      const summaries: { label?: string | null; value?: string | null; icon?: string | null }[] = metrics.length ? metrics : content.preview_tabs?.length ? content.preview_tabs : content.notes?.map(note => ({ label: note.text, icon: 'check' })) || [];
+      return <section {...props} className={`hero cinematic-hero ${summaries.length ? 'has-summary' : ''}`} data-has-image={!!mediaUrl(content.image)}>
+        <div className="cinematic-background" aria-hidden="true"><Picture src={content.image} alt="" className="cinematic-image" priority /><div className="cinematic-overlay" /></div>
+        <div className="container cinematic-content">
+          {content.eyebrow && <span className="cinematic-eyebrow">{content.eyebrow}</span>}
           <h1><AccentTitle text={content.title} accent={content.title_accent} /></h1>
-          {content.description && <p className="agency-hero-description">{content.description}</p>}
+          {content.description && <p className="cinematic-description">{content.description}</p>}
           <Buttons buttons={content.buttons} context={context} />
           <Media url={content.video_url} title={content.preview_title || content.title} />
         </div>
-        {(content.image || content.preview_title || content.preview_tabs?.length) && <div className="agency-hero-overview">
-          {content.image ? <Picture src={content.image} alt={content.image_alt || content.title} className="agency-overview-image" /> : <>
-            {content.preview_title && <h2>{content.preview_title}</h2>}
-            {content.preview_note && <p>{content.preview_note}</p>}
-            {!!content.preview_tabs?.length && <ul>{content.preview_tabs.map((tab, i) => <li key={i}><span><Icon name={tab.icon || 'check'} size={23} /></span><strong>{tab.label}</strong></li>)}</ul>}
-            {content.preview_badge && <div className="agency-overview-note"><Icon name="circlecheck" size={17} />{content.preview_badge}</div>}
-          </>}
+        {!!summaries.length && <div className="container cinematic-summary" style={{ '--summary-columns': Math.min(4, summaries.length) } as CSSProperties}>
+          {summaries.map((summary, i) => <div className="cinematic-summary-item" key={i}>
+            {summary.value ? <strong>{summary.value}</strong> : <Icon name={summary.icon || 'check'} size={25} />}
+            <span>{summary.label}</span>
+          </div>)}
         </div>}
-      </div>
-      {!!content.notes?.length && <div className="container agency-hero-capabilities">{content.notes.map((note, i) => <span key={i}><Icon name="check" size={17} />{note.text}</span>)}</div>}
-    </section>;
+      </section>;
+    }
     if (section.settings?.variant === 'canvas') return <section {...props} className={`hero hero-canvas ${visual ? 'canvas-has-visual' : ''}`}>
       <div className="container canvas-shell">
         <div className="canvas-copy">
