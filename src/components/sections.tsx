@@ -83,6 +83,25 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
+    if (settings.variant === 'editorial') return <section {...props} className="hero split-hero">
+      <div className="container split-hero-layout">
+        <div className="split-hero-copy">
+          {content.eyebrow && <span className="split-hero-eyebrow">{content.eyebrow}</span>}
+          <h1><AccentTitle text={content.title} accent={content.title_accent} /></h1>
+          {content.description && <p className="split-hero-description">{content.description}</p>}
+          {(content.preview_title || content.preview_tabs?.length) && <div className="split-hero-services">
+            {content.preview_title && <h2>{content.preview_title}</h2>}
+            {!!content.preview_tabs?.length && <ul>{content.preview_tabs.map((tab, i) => <li key={i}>{tab.label}</li>)}</ul>}
+          </div>}
+          <Buttons buttons={content.buttons} context={context} />
+          {!!content.notes?.length && <ul className="split-hero-notes">{content.notes.map((note, i) => <li key={i}><Icon name="check" size={15} />{note.text}</li>)}</ul>}
+        </div>
+        <div className={`split-hero-media ${mediaUrl(content.image) ? 'has-image' : ''}`}>
+          {mediaUrl(content.image) ? <Picture src={content.image} alt={content.image_alt || content.title} className="split-hero-image" priority /> : <div className="split-hero-fallback" aria-hidden="true"><span>{site.settings.brand?.name}</span><i /><i /></div>}
+          <Media url={content.video_url} title={content.title} />
+        </div>
+      </div>
+    </section>;
     if (settings.variant === 'spotlight') {
       const metrics = content.preview_metrics?.filter(metric => metric.label || metric.value) || [];
       const summaries: { label?: string | null; value?: string | null; icon?: string | null }[] = metrics.length ? metrics : content.preview_tabs?.length ? content.preview_tabs : content.notes?.map(note => ({ label: note.text, icon: 'check' })) || [];
