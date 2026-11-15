@@ -14,6 +14,7 @@ import { MotionMarquee } from './motion-marquee';
 import { CardCollection } from './card-collection';
 import { ProjectShowcase } from './project-showcase';
 import { ProjectStack } from './project-stack';
+import { ServiceGrid } from './service-grid';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -53,6 +54,10 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const widthProps = { 'data-content-width': section.settings?.content_width || 'normal' };
   const link = (item: Item) => siteHref(item.url, context);
   const settings = section.settings || {};
+  if (section.type === 'solutions' && settings.variant === 'editorial') {
+    if (!items.length) return null;
+    return <section {...props} className="section service-grid-section"><div className="container"><ServiceGrid content={content} context={context} /></div></section>;
+  }
   if (section.type === 'projects') {
     if (!context.preview && !items.some(item => item.title || mediaUrl(item.image) || item.description)) return null;
     return <section {...props} className="section project-stack"><div className="container"><ProjectStack content={content} context={context} enabled={animate} mobile={motion.mobile} /></div></section>;

@@ -17,6 +17,8 @@ export type Content = {
   direction?: 'left' | 'right'; speed?: 'slow' | 'normal' | 'fast';
   autoplay?: boolean; pause_label?: string; play_label?: string;
   stack_step?: string;
+  header_link_label?: string; header_link_url?: string;
+  grid_columns?: string; grid_tablet_columns?: string; grid_mobile_columns?: string; grid_gap?: string;
   slide_width?: 'compact' | 'normal' | 'wide'; slide_ratio?: 'wide' | 'landscape' | 'square' | 'portrait'; image_fit?: 'contain' | 'cover';
   title?: string | null; title_accent?: string | null; eyebrow?: string | null;
   description?: string | null; body?: string | null; image?: string | null; image_alt?: string | null;
