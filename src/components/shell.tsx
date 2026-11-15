@@ -50,7 +50,7 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
     const outside = (event: MouseEvent) => { if (!(event.target as Element).closest('.nav-dropdown')) close(); };
     window.addEventListener('keydown', escape); document.addEventListener('click', outside); return () => { window.removeEventListener('keydown', escape); document.removeEventListener('click', outside); };
   }, []);
-  return <header className="site-header" onClick={event => { if ((event.target as Element).closest('a')) { setOpen(false); event.currentTarget.querySelectorAll<HTMLDetailsElement>('details[open]').forEach(node => { node.open = false; }); } }}><div className="container header-inner">
+  return <header className="site-header compact-header" onClick={event => { if ((event.target as Element).closest('a')) { setOpen(false); event.currentTarget.querySelectorAll<HTMLDetailsElement>('details[open]').forEach(node => { node.open = false; }); } }}><div className="container header-inner">
     <Link className="brand" href={siteHref('/', context) || '/'} onClick={() => setOpen(false)}>
       {settings.brand?.logo && safeUrl(settings.brand.logo) ? <img src={settings.brand.logo} alt={settings.brand.name || ''} className="brand-logo" /> : <><BrandMark /><span>{settings.brand?.name}</span></>}
     </Link>
@@ -61,7 +61,7 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
       </details> : <RichLink item={item} context={context} key={index} />)}
     </nav>
     <div className="header-actions">
-      <Link href={languageHref} className="site-language-toggle" lang={language} hrefLang={language} aria-label={language === 'en' ? 'Switch to English' : 'التبديل إلى العربية'}><Icon name="globe" size={16} /><span>{language === 'en' ? 'English' : 'العربية'}</span></Link>
+      <Link href={languageHref} className="site-language-toggle" lang={language} hrefLang={language} aria-label={language === 'en' ? 'Switch to English' : 'التبديل إلى العربية'}><span>{language === 'en' ? 'EN' : 'عربي'}</span></Link>
       {settings.utilities?.show_call && settings.contact?.phone && <a className="utility-call" href={`tel:${settings.contact.phone.replace(/[^+\d]/g, '')}`}><Icon name="phone" size={18} />{settings.utilities.call_label || settings.contact.phone}</a>}
       {settings.utilities?.show_login !== false && settings.contact?.login_url && <Link href={safeUrl(settings.contact.login_url) || '#'} className="login-link"><Icon name="external" size={15} />{settings.utilities?.login_label || settings.brand?.name}</Link>}
       {settings.utilities?.show_booking && siteHref(settings.contact?.booking_url, context) && <Link className="button button-primary booking-link" href={siteHref(settings.contact?.booking_url, context)!}><Icon name="calendar" size={18} />{settings.utilities.booking_label}</Link>}
@@ -69,10 +69,10 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
       <button className="menu-toggle" aria-label={open ? labels.close_label : labels.menu_label} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}><Icon name={open ? 'close' : 'menu'} size={24} /></button>
     </div>
     <nav id="mobile-navigation" className="mobile-nav" hidden={!open} aria-label={labels.menu_label}>
-      {items.map((item, index) => <div key={index}>
-        <Link href={siteHref(item.url, context) || '#'} onClick={() => setOpen(false)}>{item.label}<Icon name="arrow" size={17} /></Link>
-        {(item.children?.length || item.groups?.length) ? <MenuPanel item={item} context={context} /> : null}
-      </div>)}
+      {items.map((item, index) => item.children?.some(child => !child.hidden) || item.groups?.some(group => !group.hidden) ? <details className="mobile-nav-group" name="mobile-site-navigation" key={index}>
+        <summary>{item.label}<Icon name="down" size={15} /></summary>
+        <MenuPanel item={item} context={context} />
+      </details> : <div key={index}><Link href={siteHref(item.url, context) || '#'} onClick={() => setOpen(false)}>{item.label}</Link></div>)}
       {settings.navigation?.buttons?.map((button, index) => <div key={index} onClick={() => setOpen(false)}><ButtonLink button={button} context={context} /></div>)}
       {settings.utilities?.show_booking && siteHref(settings.contact?.booking_url, context) && <Link href={siteHref(settings.contact?.booking_url, context)!}><Icon name="calendar" />{settings.utilities.booking_label}</Link>}
       {settings.utilities?.show_call && settings.contact?.phone && <a href={`tel:${settings.contact.phone.replace(/[^+\d]/g, '')}`}><Icon name="phone" />{settings.utilities.call_label || settings.contact.phone}</a>}
