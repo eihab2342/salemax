@@ -12,7 +12,6 @@ import { motionOptions, revealAnimation } from '@/lib/motion';
 import { AnimatedNumber } from './animated-number';
 import { MotionMarquee } from './motion-marquee';
 import { CardCollection } from './card-collection';
-import { DigitalScene } from './digital-scene';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -62,7 +61,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
       <div className="container"><CardCollection intro={intro} settings={settings} labels={labels} animate={animate} mobile={motion.mobile} locale={context.locale}>
         {ordered.map((item, i) => <div className={`managed-card ${item.highlighted ? 'highlighted' : ''}`} id={`${id}-managed-${i}`} key={i}>
           <div className="managed-card-topline">{(item.tag || item.category || item.icon) && <span className="managed-card-tag"><Icon name={item.icon} size={17} />{item.tag || item.category}</span>}{settings.show_numbers && <span className="managed-card-number">{String(i + 1).padStart(2, '0')}<small> / {String(ordered.length).padStart(2, '0')}</small></span>}</div>
-          {(item.image || section.type === 'features' || (section.type === 'solutions' && settings.variant === 'editorial')) && <div className="managed-card-media">{item.image ? <Picture src={item.image} alt={item.alt || item.name || item.title} /> : section.type === 'solutions' ? <DigitalScene kind={i} /> : <FeatureArt item={item} index={i} />}</div>}
+          {(item.image || section.type === 'features') && <div className="managed-card-media">{section.type === 'features' ? <FeatureArt item={item} index={i} /> : <Picture src={item.image} alt={item.alt || item.name || item.title} />}</div>}
           <div className="managed-card-copy">
             {item.anchor && /^[a-z][a-z0-9_-]*$/i.test(item.anchor) && <span id={item.anchor} className="managed-anchor" aria-hidden="true" />}
             {section.type === 'stats' ? <><AnimatedNumber value={item.value} locale={context.locale} enabled={animate && motion.counters} duration={motion.duration} mobile={motion.mobile} /><h3>{item.label}</h3></> : (item.title || item.name) && <h3>{link(item) ? <Link href={link(item)!}>{item.title || item.name}</Link> : item.title || item.name}</h3>}
@@ -85,9 +84,6 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
     if (settings.variant === 'spotlight') return <section {...props} className="hero agency-hero">
-      <div className="agency-hero-grid" aria-hidden="true" />
-      <div className="agency-hero-halo" aria-hidden="true"><i /><i /><i /></div>
-      {content.image && <Picture src={content.image} alt={content.image_alt || ''} className="agency-hero-backdrop" />}
       <div className="container agency-hero-inner">
         <div className="agency-hero-copy">
           {content.eyebrow && <span className="eyebrow agency-hero-eyebrow"><i />{content.eyebrow}</span>}
@@ -96,9 +92,16 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
           <Buttons buttons={content.buttons} context={context} />
           <Media url={content.video_url} title={content.preview_title || content.title} />
         </div>
-        <div className="agency-hero-art"><DigitalScene /></div>
+        {(content.image || content.preview_title || content.preview_tabs?.length) && <div className="agency-hero-overview">
+          {content.image ? <Picture src={content.image} alt={content.image_alt || content.title} className="agency-overview-image" /> : <>
+            {content.preview_title && <h2>{content.preview_title}</h2>}
+            {content.preview_note && <p>{content.preview_note}</p>}
+            {!!content.preview_tabs?.length && <ul>{content.preview_tabs.map((tab, i) => <li key={i}><span><Icon name={tab.icon || 'check'} size={23} /></span><strong>{tab.label}</strong></li>)}</ul>}
+            {content.preview_badge && <div className="agency-overview-note"><Icon name="circlecheck" size={17} />{content.preview_badge}</div>}
+          </>}
+        </div>}
       </div>
-      {!!content.notes?.length && <div className="container agency-hero-capabilities">{content.notes.map((note, i) => <span key={i}><small>{String(i + 1).padStart(2, '0')}</small><Icon name={['smartphone', 'globe', 'code'][i % 3]} size={20} />{note.text}<Icon name="arrow" size={18} /></span>)}</div>}
+      {!!content.notes?.length && <div className="container agency-hero-capabilities">{content.notes.map((note, i) => <span key={i}><Icon name="check" size={17} />{note.text}</span>)}</div>}
     </section>;
     if (section.settings?.variant === 'canvas') return <section {...props} className={`hero hero-canvas ${visual ? 'canvas-has-visual' : ''}`}>
       <div className="container canvas-shell">

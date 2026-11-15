@@ -28,8 +28,7 @@ import '../styles/motion-controls.css';
 import '../styles/navigation.css';
 import '../styles/hero-canvas.css';
 import '../styles/card-collection.css';
-import '../styles/agency.css';
-import '../styles/creative-agency.css';
+import '../styles/clear-agency.css';
 import '../styles/scrollbars.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
