@@ -81,6 +81,21 @@ export function Header({ settings, context }: { settings: Settings; context: Sit
   </div></header>;
 }
 
+function FooterGroups({ columns, context }: { columns: NonNullable<Settings['footer']>['columns']; context: SiteContext }) {
+  const [wide, setWide] = useState(true);
+  const [expanded, setExpanded] = useState<number | null>(null);
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)');
+    const update = () => setWide(media.matches);
+    update(); media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return <div className="footer-columns">{columns?.filter(column => !column.hidden).map((column, index) => <details className="footer-group" open={wide || expanded === index} key={index}>
+    <summary onClick={event => { event.preventDefault(); if (!wide) setExpanded(expanded === index ? null : index); }}><h3>{column.title}</h3><Icon name="chevron" size={18} /></summary>
+    <div className="footer-group-links">{column.links?.map((link, i) => <RichLink item={link} context={context} key={i} />)}</div>
+  </details>)}</div>;
+}
+
 export function Footer({ settings, context }: { settings: Settings; context: SiteContext }) {
   return <footer className={`site-footer footer-${settings.footer?.layout || 'classic'}`}><div className="container">
     {settings.footer?.title && <h2 className="footer-directory-title">{settings.footer.title}</h2>}
@@ -89,12 +104,12 @@ export function Footer({ settings, context }: { settings: Settings; context: Sit
       {settings.footer?.description && <p>{settings.footer.description}</p>}
       {settings.brand?.tagline && <span className="footer-tagline"><i />{settings.brand.tagline}</span>}
     </div>
-      <div className="footer-columns">{settings.footer?.columns?.filter(column => !column.hidden).map((column, index) => <div key={index}><h3>{column.title}</h3>{column.links?.map((link, i) => <RichLink item={link} context={context} key={i} />)}</div>)}</div>
+      <FooterGroups columns={settings.footer?.columns} context={context} />
     </div>
     {!settings.footer?.hide_wordmark && settings.brand?.name && <div className="footer-signature" aria-hidden="true"><span>{settings.brand.name}</span><Icon name="arrow" size={90} /></div>}
-    <div className="footer-bottom"><span>{settings.footer?.copyright}</span>
+    <div className="footer-bottom"><span className="footer-copyright">{settings.footer?.copyright}</span>
       <VisitorThemeToggle settings={settings} preview={context.preview} />
-      {settings.social?.items?.some(item => safeUrl(item.url)) && <div><span>{settings.footer?.social_title}</span><div className="social-links">{settings.social.items.filter(item => safeUrl(item.url)).map((item, index) => <Link key={index} href={safeUrl(item.url)!} aria-label={item.label || undefined}><Icon name={item.icon || 'globe'} size={18} /><span>{item.label}</span></Link>)}</div></div>}
+      {settings.social?.items?.some(item => safeUrl(item.url)) && <div className="footer-social"><span>{settings.footer?.social_title}</span><div className="social-links">{settings.social.items.filter(item => safeUrl(item.url)).map((item, index) => <Link key={index} href={safeUrl(item.url)!} aria-label={item.label || undefined}><Icon name={item.icon || 'globe'} size={18} /><span>{item.label}</span></Link>)}</div></div>}
       <div className="footer-legal">{settings.footer?.legal_links?.map((item, index) => <RichLink key={index} item={item} context={context} />)}</div>
       <a href="#top" className="back-top">{settings.interface?.back_to_top}<Icon name="arrow" size={16} /></a>
     </div>
