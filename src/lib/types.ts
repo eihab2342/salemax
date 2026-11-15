@@ -3,6 +3,7 @@ export type NavItem = ButtonData & { description?: string | null; icon?: string 
 export type Item = {
   title?: string | null; name?: string | null; label?: string | null; text?: string | null;
   description?: string | null; image?: string | null; alt?: string | null; icon?: string | null;
+  logo?: string | null; background?: string | null;
   url?: string | null; link_label?: string | null; tag?: string | null; category?: string | null; anchor?: string | null;
   value?: string | null; role?: string | null; company?: string | null; quote?: string | null;
   question?: string | null; answer?: string | null; price?: string | null; currency?: string | null;
@@ -15,6 +16,7 @@ export type Content = {
   layout?: 'stacked' | 'bento' | null;
   direction?: 'left' | 'right'; speed?: 'slow' | 'normal' | 'fast';
   autoplay?: boolean; pause_label?: string; play_label?: string;
+  stack_step?: string;
   slide_width?: 'compact' | 'normal' | 'wide'; slide_ratio?: 'wide' | 'landscape' | 'square' | 'portrait'; image_fit?: 'contain' | 'cover';
   title?: string | null; title_accent?: string | null; eyebrow?: string | null;
   description?: string | null; body?: string | null; image?: string | null; image_alt?: string | null;
