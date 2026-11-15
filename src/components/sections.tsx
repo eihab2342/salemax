@@ -12,6 +12,7 @@ import { motionOptions, revealAnimation } from '@/lib/motion';
 import { AnimatedNumber } from './animated-number';
 import { MotionMarquee } from './motion-marquee';
 import { CardCollection } from './card-collection';
+import { DigitalScene } from './digital-scene';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -61,7 +62,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
       <div className="container"><CardCollection intro={intro} settings={settings} labels={labels} animate={animate} mobile={motion.mobile} locale={context.locale}>
         {ordered.map((item, i) => <div className={`managed-card ${item.highlighted ? 'highlighted' : ''}`} id={`${id}-managed-${i}`} key={i}>
           <div className="managed-card-topline">{(item.tag || item.category || item.icon) && <span className="managed-card-tag"><Icon name={item.icon} size={17} />{item.tag || item.category}</span>}{settings.show_numbers && <span className="managed-card-number">{String(i + 1).padStart(2, '0')}<small> / {String(ordered.length).padStart(2, '0')}</small></span>}</div>
-          {(item.image || section.type === 'features') && <div className="managed-card-media">{section.type === 'features' ? <FeatureArt item={item} index={i} /> : <Picture src={item.image} alt={item.alt || item.name || item.title} />}</div>}
+          {(item.image || section.type === 'features' || (section.type === 'solutions' && settings.variant === 'editorial')) && <div className="managed-card-media">{item.image ? <Picture src={item.image} alt={item.alt || item.name || item.title} /> : section.type === 'solutions' ? <DigitalScene kind={i} /> : <FeatureArt item={item} index={i} />}</div>}
           <div className="managed-card-copy">
             {item.anchor && /^[a-z][a-z0-9_-]*$/i.test(item.anchor) && <span id={item.anchor} className="managed-anchor" aria-hidden="true" />}
             {section.type === 'stats' ? <><AnimatedNumber value={item.value} locale={context.locale} enabled={animate && motion.counters} duration={motion.duration} mobile={motion.mobile} /><h3>{item.label}</h3></> : (item.title || item.name) && <h3>{link(item) ? <Link href={link(item)!}>{item.title || item.name}</Link> : item.title || item.name}</h3>}
@@ -95,7 +96,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
           <Buttons buttons={content.buttons} context={context} />
           <Media url={content.video_url} title={content.preview_title || content.title} />
         </div>
-        <div className="agency-hero-art" aria-hidden="true"><div className="agency-orb"><span /><span /><span /><Icon name="code" size={72} /></div><div className="agency-orbit orbit-one" /><div className="agency-orbit orbit-two" /></div>
+        <div className="agency-hero-art"><DigitalScene /></div>
       </div>
       {!!content.notes?.length && <div className="container agency-hero-capabilities">{content.notes.map((note, i) => <span key={i}><small>{String(i + 1).padStart(2, '0')}</small><Icon name={['smartphone', 'globe', 'code'][i % 3]} size={20} />{note.text}<Icon name="arrow" size={18} /></span>)}</div>}
     </section>;

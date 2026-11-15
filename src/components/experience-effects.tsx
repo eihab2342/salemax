@@ -16,7 +16,7 @@ export function ExperienceEffects({ settings }: { settings?: MotionSettings }) {
     const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const small = window.matchMedia('(max-width: 767px)');
     const disabled = () => !options.enabled || motion.matches || (!options.mobile && small.matches);
-    const revealSelector = '.section-heading, .solution-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main, .motion-marquee';
+    const revealSelector = '.section-heading, .solution-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .managed-card, .agency-hero-copy, .digital-scene, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main, .motion-marquee';
     const seen = new WeakSet<Element>();
     let observer: IntersectionObserver | undefined;
     let frame = 0, pointerFrame = 0, scanFrame = 0;
@@ -39,7 +39,7 @@ export function ExperienceEffects({ settings }: { settings?: MotionSettings }) {
     };
     const move = (event: PointerEvent) => {
       if (disabled() || !pointer.matches || event.pointerType === 'touch') return;
-      const target = (event.target as Element).closest<HTMLElement>('.button, .solution-card, .feature-card, .price-card');
+      const target = (event.target as Element).closest<HTMLElement>('.button, .solution-card, .feature-card, .price-card, .managed-card, .digital-scene');
       if (target?.closest('[data-section-motion="none"]') || (target?.matches('.button') ? !options.magnetic : !options.hover)) { resetPointer(); return; }
       if (target !== active) { resetPointer(); active = target; bounds = target?.getBoundingClientRect() || null; }
       if (!active) return;
