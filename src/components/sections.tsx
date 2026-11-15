@@ -63,6 +63,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
           <div className="managed-card-topline">{(item.tag || item.category || item.icon) && <span className="managed-card-tag"><Icon name={item.icon} size={17} />{item.tag || item.category}</span>}{settings.show_numbers && <span className="managed-card-number">{String(i + 1).padStart(2, '0')}<small> / {String(ordered.length).padStart(2, '0')}</small></span>}</div>
           {(item.image || section.type === 'features') && <div className="managed-card-media">{section.type === 'features' ? <FeatureArt item={item} index={i} /> : <Picture src={item.image} alt={item.alt || item.name || item.title} />}</div>}
           <div className="managed-card-copy">
+            {item.anchor && /^[a-z][a-z0-9_-]*$/i.test(item.anchor) && <span id={item.anchor} className="managed-anchor" aria-hidden="true" />}
             {section.type === 'stats' ? <><AnimatedNumber value={item.value} locale={context.locale} enabled={animate && motion.counters} duration={motion.duration} mobile={motion.mobile} /><h3>{item.label}</h3></> : (item.title || item.name) && <h3>{link(item) ? <Link href={link(item)!}>{item.title || item.name}</Link> : item.title || item.name}</h3>}
             {item.quote && <blockquote><Icon name="quote" size={25} />{item.quote}</blockquote>}
             {item.description && <p>{item.description}</p>}
@@ -82,6 +83,22 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   }
   if (section.type === 'hero') {
     const visual = !!(content.preview_columns?.length || content.image || content.video_url);
+    if (settings.variant === 'spotlight') return <section {...props} className="hero agency-hero">
+      <div className="agency-hero-grid" aria-hidden="true" />
+      <div className="agency-hero-halo" aria-hidden="true"><i /><i /><i /></div>
+      {content.image && <Picture src={content.image} alt={content.image_alt || ''} className="agency-hero-backdrop" />}
+      <div className="container agency-hero-inner">
+        <div className="agency-hero-copy">
+          {content.eyebrow && <span className="eyebrow agency-hero-eyebrow"><i />{content.eyebrow}</span>}
+          <h1><AccentTitle text={content.title} accent={content.title_accent} /></h1>
+          {content.description && <p className="agency-hero-description">{content.description}</p>}
+          <Buttons buttons={content.buttons} context={context} />
+          <Media url={content.video_url} title={content.preview_title || content.title} />
+        </div>
+        <div className="agency-hero-art" aria-hidden="true"><div className="agency-orb"><span /><span /><span /><Icon name="code" size={72} /></div><div className="agency-orbit orbit-one" /><div className="agency-orbit orbit-two" /></div>
+      </div>
+      {!!content.notes?.length && <div className="container agency-hero-capabilities">{content.notes.map((note, i) => <span key={i}><small>{String(i + 1).padStart(2, '0')}</small><Icon name={['smartphone', 'globe', 'code'][i % 3]} size={20} />{note.text}<Icon name="arrow" size={18} /></span>)}</div>}
+    </section>;
     if (section.settings?.variant === 'canvas') return <section {...props} className={`hero hero-canvas ${visual ? 'canvas-has-visual' : ''}`}>
       <div className="container canvas-shell">
         <div className="canvas-copy">
