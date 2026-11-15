@@ -13,6 +13,7 @@ export type Item = {
 };
 export type PreviewColumn = { title?: string; color?: string; cards?: { name?: string; description?: string; tag?: string; initials?: string }[] };
 export type Content = {
+  surface_color?: string; ink_color?: string; accent_color?: string;
   layout?: 'stacked' | 'bento' | null;
   direction?: 'left' | 'right'; speed?: 'slow' | 'normal' | 'fast';
   autoplay?: boolean; pause_label?: string; play_label?: string;

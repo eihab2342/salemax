@@ -35,6 +35,7 @@ import '../styles/split-hero.css';
 import '../styles/project-showcase.css';
 import '../styles/project-stack.css';
 import '../styles/service-grid.css';
+import '../styles/benefits-stack.css';
 import '../styles/scrollbars.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };
