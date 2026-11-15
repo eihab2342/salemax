@@ -16,7 +16,7 @@ export function ExperienceEffects({ settings }: { settings?: MotionSettings }) {
     const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const small = window.matchMedia('(max-width: 767px)');
     const disabled = () => !options.enabled || motion.matches || (!options.mobile && small.matches);
-    const revealSelector = '.section-heading, .solution-card, .service-grid-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .managed-card, .agency-hero-copy, .digital-scene, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main, .motion-marquee';
+    const revealSelector = '.section-heading, .solution-card, .service-grid-card, .work-showcase-card, .resource-card, .story-step, .logos-grid, .cta-box, .feature-card, .managed-card, .agency-hero-copy, .digital-scene, .testimonials-grid figure, .team-grid article, .stats-row>div, .contact-form-wrap, .footer-main, .motion-marquee';
     const seen = new WeakSet<Element>();
     let observer: IntersectionObserver | undefined;
     let frame = 0, pointerFrame = 0, scanFrame = 0;
@@ -60,10 +60,13 @@ export function ExperienceEffects({ settings }: { settings?: MotionSettings }) {
     const scan = () => {
       scanFrame = 0;
       site.querySelectorAll<HTMLElement>(revealSelector).forEach(node => {
+        const sectionMotion = node.closest('[data-section-motion]')?.getAttribute('data-section-motion');
+        if (sectionMotion === 'none' || ((!sectionMotion || sectionMotion === 'inherit') && options.reveal === 'none')) {
+          observer?.unobserve(node); seen.delete(node); node.classList.remove('motion-reveal', 'in-view'); return;
+        }
         if (seen.has(node)) return;
         seen.add(node);
         const siblings = node.parentElement ? Array.from(node.parentElement.children) : [];
-        if (node.closest('[data-section-motion="none"]')) return;
         node.style.setProperty('--reveal-delay', `${options.stagger ? Math.max(0, siblings.indexOf(node) % 4) * 65 : 0}ms`);
         node.classList.add('motion-reveal'); observer?.observe(node);
       });

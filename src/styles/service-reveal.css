@@ -1,0 +1,9 @@
+/* The heading and each card enter separately; content stays readable without JS. */
+.work-showcase-section{--motion-distance:64px}
+.service-grid-section{--motion-distance:48px}
+@media(prefers-reduced-motion:no-preference){
+ .website[data-motion=full][data-effect-enabled=true] :is(.work-showcase-section,.service-grid-section):not([data-section-motion=none]) .motion-reveal:not(.in-view){opacity:0}
+ .website[data-motion=full][data-effect-enabled=true] :is(.work-showcase-section,.service-grid-section)[data-section-motion=rise] .motion-reveal:not(.in-view){transform:translate3d(0,var(--motion-distance),0)}
+ .website[data-motion=full] :is(.work-showcase-section,.service-grid-section) .motion-reveal.in-view{animation-timing-function:cubic-bezier(.16,1,.3,1)}
+}
+@media(max-width:767px){.work-showcase-section{--motion-distance:44px}.service-grid-section{--motion-distance:36px}}
