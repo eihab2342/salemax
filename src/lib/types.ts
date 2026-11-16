@@ -22,6 +22,7 @@ export type Content = {
   layout?: 'stacked' | 'bento' | null;
   direction?: 'left' | 'right'; speed?: 'slow' | 'normal' | 'fast';
   autoplay?: boolean; pause_label?: string; play_label?: string;
+  scroll_reactive?: boolean; pause_on_hover?: boolean;
   stack_step?: string;
   header_link_label?: string; header_link_url?: string;
   grid_columns?: string; grid_tablet_columns?: string; grid_mobile_columns?: string; grid_gap?: string;
