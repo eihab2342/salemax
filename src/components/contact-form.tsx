@@ -5,7 +5,7 @@ import type { FormData as FormDefinition } from '@/lib/types';
 import { Icon } from './icon';
 import { projectBrief, readProjectFeatures } from '@/lib/project-builder';
 
-export function ContactForm({ form, labels, preview, projectFeatures = [], configurationLabel }: { form: FormDefinition; labels: Record<string, string>; preview: boolean; projectFeatures?: string[]; configurationLabel?: string }) {
+export function ContactForm({ form, labels, preview, projectFeatures = [], configurationLabel, variant = 'default', onEditConfiguration, onSubmitted }: { form: FormDefinition; labels: Record<string, string>; preview: boolean; projectFeatures?: string[]; configurationLabel?: string; variant?: 'default' | 'inquiry'; onEditConfiguration?: () => void; onSubmitted?: () => void }) {
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [message, setMessage] = useState('');
@@ -28,13 +28,13 @@ export function ContactForm({ form, labels, preview, projectFeatures = [], confi
       });
       const result = await response.json() as { message?: string; errors?: Record<string, string[]> };
       if (!response.ok) { setErrors(result.errors || {}); setMessage(result.errors ? '' : labels.form_error || result.message || ''); }
-      else { setSuccess(true); setMessage(result.message || form.success_message); }
+      else { setSuccess(true); setMessage(result.message || form.success_message); onSubmitted?.(); }
       requestAnimationFrame(() => status.current?.focus());
     } catch { setMessage(labels.form_error || ''); }
     finally { setSending(false); }
   }
-  return <div className="contact-form-wrap">
-    {!!features.length && <div className="form-project-configuration"><h3>{configurationLabel || (form.locale === 'en' ? 'Your project configuration' : 'تكوين مشروعك')}</h3><ul>{features.map(feature => <li key={feature}><Icon name="check" size={14} />{feature}</li>)}</ul></div>}
+  return <div className={`contact-form-wrap ${variant === 'inquiry' ? 'inquiry-form-layout' : ''}`} data-has-configuration={!!features.length}>
+    {!!features.length && <aside className="form-project-configuration"><div className="inquiry-configuration-heading"><span><Icon name="layers" size={22} /></span><h3>{configurationLabel || (form.locale === 'en' ? 'Your project configuration' : 'تكوين مشروعك')}</h3><b>{features.length}</b></div><ul>{features.map(feature => <li key={feature}><Icon name="check" size={14} />{feature}</li>)}</ul>{variant === 'inquiry' && <><p className="inquiry-configuration-note">{form.locale === 'en' ? 'These features will be included with your inquiry.' : 'الاختيارات دي هتتبعت مع طلبك لفريقنا.'}</p>{onEditConfiguration && <button className="inquiry-edit-configuration" type="button" onClick={onEditConfiguration}>{form.locale === 'en' ? 'Edit configuration' : 'تعديل التكوين'}<Icon name="arrow" size={14} /></button>}</>}</aside>}
     <div ref={status} tabIndex={-1} role={success ? 'status' : 'alert'} className={success ? 'form-success' : 'form-status'}>
       {success && <span><Icon name="circlecheck" size={30} /></span>}{message && <p>{message}</p>}
       {!!Object.keys(errors).length && <ul>{Object.entries(errors).map(([key, values]) => <li key={key}>{values.join(' ')}</li>)}</ul>}
@@ -46,7 +46,7 @@ export function ContactForm({ form, labels, preview, projectFeatures = [], confi
         const props = { id, name: field.name, required: field.required, 'aria-invalid': !!error, 'aria-describedby': error ? id + '-error' : undefined, disabled: sending };
         return <div className={`form-field ${field.type === 'textarea' || field.type === 'checkbox' ? 'full-width' : ''}`} key={field.name}>
           {field.type === 'checkbox' ? <label className="checkbox-label"><input {...props} type="checkbox" /><span>{field.label}{field.required && <em>*</em>}</span></label> : <><label htmlFor={id}>{field.label}{field.required && <em>*</em>}</label>
-            {field.type === 'textarea' ? <textarea {...props} rows={4} defaultValue={field.name === messageField?.name ? brief : undefined} /> : field.type === 'select' ? <select {...props} defaultValue=""><option value="" disabled>{field.label}</option>{field.options?.map(option => <option key={option} value={option}>{option}</option>)}</select>
+            {field.type === 'textarea' ? <textarea {...props} rows={variant === 'inquiry' ? 3 : 4} defaultValue={variant !== 'inquiry' && field.name === messageField?.name ? brief : undefined} /> : field.type === 'select' ? <select {...props} defaultValue=""><option value="" disabled>{field.label}</option>{field.options?.map(option => <option key={option} value={option}>{option}</option>)}</select>
               : <input {...props} type={['email', 'tel', 'date'].includes(field.type) ? field.type : 'text'} autoComplete={field.type === 'email' ? 'email' : field.type === 'tel' ? 'tel' : field.name === 'name' ? 'name' : undefined} />}</>}
           {error && <small className="field-error" id={id + '-error'}>{error.join(' ')}</small>}
         </div>;

@@ -20,6 +20,8 @@ export function ProjectBuilder({ content, context, enabled, mobile, form, labels
   const [size, setSize] = useState({ width: 1, height: 1 });
   const [small, setSmall] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const [formMounted, setFormMounted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const map = useRef<HTMLDivElement>(null);
   const hub = useRef<HTMLDivElement>(null);
@@ -33,7 +35,7 @@ export function ProjectBuilder({ content, context, enabled, mobile, form, labels
   useEffect(() => {
     const node = dialog.current;
     if (!node) return;
-    if (formOpen) node.showModal(); else if (node.open) node.close();
+    if (formOpen && !node.open) node.showModal(); else if (!formOpen && node.open) node.close();
     if (!formOpen) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -84,13 +86,13 @@ export function ProjectBuilder({ content, context, enabled, mobile, form, labels
       </div>
       <div className="builder-summary">
         <div><span className="builder-summary-label">{content.selection_label}</span><div className="builder-selected">{choices.length ? selected.filter(index => items[index]).map(index => <button type="button" key={index} onClick={() => toggle(index)} aria-label={`${context.locale === 'en' ? 'Remove' : 'إزالة'} ${items[index].title}`}>{items[index].title}<X size={13} aria-hidden="true" /></button>) : <p>{content.empty_label}</p>}</div></div>
-        {form ? <button type="button" className="button button-primary builder-cta" onClick={() => setFormOpen(true)}><span>{content.cta_label}</span><ArrowUpRight size={18} aria-hidden="true" /></button> : <Link href={projectContactHref(content.cta_url, choices, context)} className="button button-primary builder-cta"><span>{content.cta_label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>}
+        {form ? <button type="button" className="button button-primary builder-cta" onClick={() => { setFormMounted(true); setFormOpen(true); }}><span>{content.cta_label}</span><ArrowUpRight size={18} aria-hidden="true" /></button> : <Link href={projectContactHref(content.cta_url, choices, context)} className="button button-primary builder-cta"><span>{content.cta_label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>}
       </div>
     </div>
     {content.disclaimer && <p className="builder-disclaimer">{content.disclaimer}</p>}
-    {form && <dialog ref={dialog} className="builder-inquiry-dialog" aria-labelledby={dialogTitle} onClose={() => setFormOpen(false)} onCancel={() => setFormOpen(false)} onClick={event => { if (event.target !== event.currentTarget) return; const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) setFormOpen(false); }}>
-      <div className="builder-inquiry-heading"><div><span>{content.hub_label}</span><h2 id={dialogTitle}>{content.cta_label}</h2></div><button type="button" onClick={() => setFormOpen(false)} aria-label={context.locale === 'en' ? 'Close inquiry' : 'إغلاق النموذج'}><X size={21} aria-hidden="true" /></button></div>
-      {formOpen && <ContactForm form={form} labels={labels} preview={context.preview} projectFeatures={choices} configurationLabel={content.selection_label} />}
+    {form && <dialog ref={dialog} className="builder-inquiry-dialog" aria-labelledby={dialogTitle} onClose={() => { setFormOpen(false); if (submitted) { setFormMounted(false); setSubmitted(false); } }} onCancel={() => setFormOpen(false)} onClick={event => { if (event.target !== event.currentTarget) return; const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) setFormOpen(false); }}>
+      <div className="builder-inquiry-heading"><div><span className="inquiry-heading-icon"><Icon name="messages" size={23} /></span><div><span>{content.hub_label}</span><h2 id={dialogTitle}>{form.title}</h2><p>{context.locale === 'en' ? 'Leave your details and we’ll discuss your project together.' : 'سيب بياناتك وخلّينا نتكلم في تفاصيل مشروعك.'}</p></div></div><button type="button" onClick={() => setFormOpen(false)} aria-label={context.locale === 'en' ? 'Close inquiry' : 'إغلاق النموذج'}><X size={19} aria-hidden="true" /></button></div>
+      {formMounted && <ContactForm form={form} labels={labels} preview={context.preview} projectFeatures={choices} configurationLabel={content.selection_label} variant="inquiry" onEditConfiguration={() => setFormOpen(false)} onSubmitted={() => setSubmitted(true)} />}
     </dialog>}
   </div>;
 }
