@@ -13,6 +13,7 @@ import { BenefitsStack } from './benefits-stack';
 import { ProjectDetail } from './project-detail';
 import { WorkShowcase } from './work-showcase';
 import { HeroServicePreview } from './hero-service-preview';
+import { ProjectJourney } from './project-journey';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -40,6 +41,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const id = section.settings?.anchor || `${section.type}-${index}`;
   const props = { id, style, 'data-content-width': section.settings?.content_width || 'normal', 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
   const settings = section.settings || {};
+  if (section.type === 'project_journey') return <section {...props} className="section journey-section"><div className="container"><ProjectJourney content={content} context={context} enabled={animate} mobile={motion.mobile} /></div></section>;
   if (section.type === 'work_showcase') return <section {...props} className="section work-showcase-section"><div className="container"><WorkShowcase content={content} context={context} /></div></section>;
   if (section.type === 'project_detail') return <section {...props} className="project-detail"><ProjectDetail content={content} context={context} /></section>;
   if (section.type === 'benefits') {
