@@ -42,7 +42,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
   const id = section.settings?.anchor || `${section.type}-${index}`;
   const props = { id, style, 'data-content-width': section.settings?.content_width || 'normal', 'data-spacing': section.settings?.spacing || 'normal', 'data-variant': section.settings?.variant || 'classic', 'data-section-index': index, 'data-section-motion': section.settings?.motion || 'inherit', 'data-motion-once': section.settings?.motion_once !== false };
   const settings = section.settings || {};
-  if (section.type === 'project_builder') return <section {...props} className="section builder-section"><div className="container"><ProjectBuilder content={content} context={context} enabled={animate} mobile={motion.mobile} /></div></section>;
+  if (section.type === 'project_builder') return <section {...props} className="section builder-section"><div className="container"><ProjectBuilder content={content} context={context} enabled={animate} mobile={motion.mobile} form={site.forms.find(form => form.slug === (content.form_slug || 'contact'))} labels={labels} /></div></section>;
   if (section.type === 'project_journey') return <section {...props} className="section journey-section"><div className="container"><ProjectJourney content={content} context={context} enabled={animate} mobile={motion.mobile} /></div></section>;
   if (section.type === 'work_showcase') return <section {...props} className="section work-showcase-section"><div className="container"><WorkShowcase content={content} context={context} /></div></section>;
   if (section.type === 'project_detail') return <section {...props} className="project-detail"><ProjectDetail content={content} context={context} /></section>;
@@ -110,7 +110,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
     const form = site.forms.find(form => form.slug === content.form_slug);
     return <section {...props} className="section form-section"><div className="container form-layout"><div><SectionHeading content={content} /><div className="form-aside-art" aria-hidden="true"><span><Icon name="messages" size={50} /></span><i /><Icon name="sparkles" size={28} /></div>
       <div className="contact-methods">{site.settings.contact?.email && <a href={'mailto:' + site.settings.contact.email}><Icon name="mail" /><span>{site.settings.contact.email}</span></a>}{site.settings.contact?.phone && <a href={'tel:' + site.settings.contact.phone.replace(/\s/g, '')}><Icon name="phone" /><span dir="ltr">{site.settings.contact.phone}</span></a>}</div></div>
-      {form ? <ContactForm form={form} labels={labels} preview={context.preview} /> : <div className="form-unavailable"><Icon name="mail" size={30} /><p>{labels.form_unavailable}</p></div>}
+      {form ? <ContactForm form={form} labels={labels} preview={context.preview} projectFeatures={context.projectFeatures} /> : <div className="form-unavailable"><Icon name="mail" size={30} /><p>{labels.form_unavailable}</p></div>}
     </div></section>;
   }
   if (section.type === 'text') {

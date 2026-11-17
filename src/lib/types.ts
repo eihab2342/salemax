@@ -53,6 +53,6 @@ export type Settings = {
 export type FormField = { name: string; label: string; type: string; required: boolean; options?: string[] };
 export type FormData = { slug: string; locale: string; title: string; fields: FormField[]; success_message: string; submit_label: string; is_active?: boolean };
 export type PreviewToken = { expires: string; signature: string };
-export type SiteContext = { locale: string; preview: boolean; token?: PreviewToken };
+export type SiteContext = { locale: string; preview: boolean; token?: PreviewToken; projectFeatures?: string[] };
 export type PreviewBundle = { pages: PageData[]; settings: Settings; forms: FormData[] };
 export type SiteData = { page: PageData; settings: Settings; forms: FormData[]; context: SiteContext };

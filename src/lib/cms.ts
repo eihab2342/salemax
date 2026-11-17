@@ -44,7 +44,7 @@ export const getSiteData = cache(async (slug: string, locale: string, expires?: 
   }
   const [page, settings] = await Promise.all([request<PageData>(`/api/v1/pages/${locale}/${slug}`), getSettings(locale)]);
   if (!page) notFound();
-  const slugs = [...new Set(page.sections.filter(s => s.type === 'form').map(s => s.content.form_slug).filter(Boolean))];
+  const slugs = [...new Set(page.sections.filter(s => s.type === 'form' || s.type === 'project_builder').map(s => s.content.form_slug || (s.type === 'project_builder' ? 'contact' : undefined)).filter(Boolean))];
   const forms = await Promise.all(slugs.map(slug => request<FormData>(`/api/v1/forms/${locale}/${slug}`)));
   return { page, settings, forms: forms.filter((form): form is FormData => !!form), context: { locale, preview: false } };
 });
