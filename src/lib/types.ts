@@ -31,7 +31,7 @@ export type Content = {
   description?: string | null; body?: string | null; image?: string | null; image_alt?: string | null;
   video_url?: string | null; buttons?: ButtonData[]; notes?: { text?: string }[]; items?: Item[];
   form_slug?: string | null; preview_title?: string; preview_note?: string;
-  preview_tabs?: { label?: string; icon?: string }[]; preview_metrics?: { label?: string; value?: string; icon?: string }[];
+  preview_tabs?: { label?: string; icon?: string; description?: string; url?: string }[]; preview_metrics?: { label?: string; value?: string; icon?: string }[];
   preview_columns?: PreviewColumn[]; preview_badge?: string; preview_badge_text?: string;
 };
 export type MotionSettings = { enabled?: boolean; reveal?: 'rise' | 'fade' | 'slide' | 'zoom' | 'none'; duration?: string; intensity?: 'subtle' | 'normal' | 'expressive'; stagger?: boolean; hover?: boolean; magnetic?: boolean; sheen?: boolean; glow?: boolean; parallax?: boolean; floating?: boolean; micro?: boolean; counters?: boolean; marquee?: boolean; progress?: boolean; mobile?: boolean };

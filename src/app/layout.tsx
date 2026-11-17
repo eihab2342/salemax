@@ -40,6 +40,7 @@ import '../styles/project-detail.css';
 import '../styles/work-showcase.css';
 import '../styles/service-reveal.css';
 import '../styles/responsive-footer.css';
+import '../styles/service-focus.css';
 import '../styles/scrollbars.css';
 
 export const metadata: Metadata = { applicationName: 'Salemax', formatDetection: { telephone: false } };

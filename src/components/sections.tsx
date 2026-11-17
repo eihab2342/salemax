@@ -12,6 +12,7 @@ import { ServiceGrid } from './service-grid';
 import { BenefitsStack } from './benefits-stack';
 import { ProjectDetail } from './project-detail';
 import { WorkShowcase } from './work-showcase';
+import { HeroServicePreview } from './hero-service-preview';
 
 function mediaUrl(value?: string | null) {
   const safe = safeUrl(value); return safe && /^(https?:\/\/|\/)/i.test(safe) ? safe : undefined;
@@ -75,7 +76,7 @@ export function SectionRenderer({ section, index, site }: { section: Section; in
           {!!content.notes?.length && <ul className="split-hero-notes">{content.notes.map((note, i) => <li key={i}><Icon name="check" size={15} />{note.text}</li>)}</ul>}
         </div>
         <div className={`split-hero-media ${mediaUrl(content.image) ? 'has-image' : ''}`}>
-          {mediaUrl(content.image) ? <Picture src={content.image} alt={content.image_alt || content.title} className="split-hero-image" priority /> : <div className="split-hero-fallback" aria-hidden="true"><span>{site.settings.brand?.name}</span><i /><i /></div>}
+          {mediaUrl(content.image) ? <Picture src={content.image} alt={content.image_alt || content.title} className="split-hero-image" priority /> : content.preview_tabs?.some(item => item.description) ? <HeroServicePreview content={content} context={context} brand={site.settings.brand?.name} /> : <div className="split-hero-fallback" aria-hidden="true"><span>{site.settings.brand?.name}</span><i /><i /></div>}
           <Media url={content.video_url} title={content.title} />
         </div>
       </div>

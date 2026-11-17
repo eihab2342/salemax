@@ -6,7 +6,7 @@ import { SectionHeading, Buttons } from './ui';
 import { Icon } from './icon';
 
 export function WorkShowcase({ content, context }: { content: Content; context: SiteContext }) {
-  const style = { '--showcase-surface': validColor(content.surface_color) || '#30131d', '--showcase-ink': validColor(content.ink_color) || '#ffffff' } as CSSProperties;
+  const style = { '--showcase-columns': content.grid_columns === '3' ? 3 : 2, '--showcase-surface': validColor(content.surface_color) || '#30131d', '--showcase-ink': validColor(content.ink_color) || '#ffffff' } as CSSProperties;
   return <div className="work-showcase-layout" style={style} data-image-fit={content.image_fit || 'cover'}>
     <SectionHeading content={content} />
     <div className="work-showcase-grid">{content.items?.map((item, i) => {
