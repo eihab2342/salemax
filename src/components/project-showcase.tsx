@@ -14,13 +14,12 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
   const drag = useRef({ active: false, moved: false, x: 0, position: 0 });
   const [dragging, setDragging] = useState(false);
   const [allowed, setAllowed] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [focused, setFocused] = useState(false);
   const [touching, setTouching] = useState(false);
   const [copies, setCopies] = useState(2);
   const en = context.locale === 'en';
-  const running = allowed && !paused && !(content.pause_on_hover === true && hovering) && !focused && !touching && !dragging;
+  const running = allowed && !(content.pause_on_hover === true && hovering) && !focused && !touching && !dragging;
 
   const navigate = (direction: number) => {
     const node = viewport.current, group = firstGroup.current;
@@ -141,6 +140,5 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
       onWheel={event => { if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) interactionUntil.current = performance.now() + 1500; }}>
       <div className="project-showcase-track">{group(false)}{allowed && Array.from({ length: copies }, (_, index) => group(true, index))}</div>
     </div>
-    {allowed && <div className="container project-showcase-controls"><button type="button" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? content.play_label || (en ? 'Play slider' : 'تشغيل السلايدر') : content.pause_label || (en ? 'Pause slider' : 'إيقاف السلايدر')}<span aria-hidden="true">{paused ? '▷' : 'Ⅱ'}</span></button></div>}
   </div>;
 }
