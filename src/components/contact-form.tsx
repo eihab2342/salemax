@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { FormData as FormDefinition } from '@/lib/types';
 import { Icon } from './icon';
+import { projectBrief, readProjectFeatures } from '@/lib/project-builder';
 
 export function ContactForm({ form, labels, preview }: { form: FormDefinition; labels: Record<string, string>; preview: boolean }) {
   const [sending, setSending] = useState(false);
@@ -10,6 +11,14 @@ export function ContactForm({ form, labels, preview }: { form: FormDefinition; l
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const status = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (preview) return;
+    const features = readProjectFeatures(new URLSearchParams(window.location.search).get('project_features'));
+    const brief = projectBrief(features, form.locale);
+    const textarea = formRef.current?.querySelector<HTMLTextAreaElement>('textarea[name="message"]') || formRef.current?.querySelector<HTMLTextAreaElement>('textarea');
+    if (brief && textarea && !textarea.value) textarea.value = brief;
+  }, [preview, form.locale]);
   const active = form.is_active !== false;
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (preview || sending || !active) return;
@@ -34,7 +43,7 @@ export function ContactForm({ form, labels, preview }: { form: FormDefinition; l
       {success && <span><Icon name="circlecheck" size={30} /></span>}{message && <p>{message}</p>}
       {!!Object.keys(errors).length && <ul>{Object.entries(errors).map(([key, values]) => <li key={key}>{values.join(' ')}</li>)}</ul>}
     </div>
-    {!success && <form onSubmit={submit} className="contact-form">
+    {!success && <form ref={formRef} onSubmit={submit} className="contact-form">
       <div className="form-grid">{form.fields.map(field => {
         const error = errors['data.' + field.name];
         const id = `${form.slug}-${field.name}`;
