@@ -91,7 +91,7 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
     })}
   </div>;
   return <div className="project-showcase" data-automatic={allowed} data-slide-width={content.slide_width || 'normal'} data-slide-ratio={content.slide_ratio || 'wide'} data-image-fit={content.image_fit || 'contain'}>
-    {items.length > 1 && <div className="container project-showcase-navigation" dir={en ? 'ltr' : 'rtl'}>
+    {items.length > 1 && <div className="container project-showcase-navigation" dir={en ? 'ltr' : 'rtl'} style={{ justifyContent: 'flex-end' }}>
       <button type="button" aria-label={en ? 'Previous project' : 'المشروع السابق'} onClick={() => navigate(en ? -1 : 1)}><span aria-hidden="true">{en ? '←' : '→'}</span></button>
       <button type="button" aria-label={en ? 'Next project' : 'المشروع التالي'} onClick={() => navigate(en ? 1 : -1)}><span aria-hidden="true">{en ? '→' : '←'}</span></button>
     </div>}
