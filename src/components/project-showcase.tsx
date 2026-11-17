@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import type { Content, SiteContext } from '@/lib/types';
 import { safeUrl, siteHref } from '@/lib/links';
 
@@ -91,9 +92,12 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
     })}
   </div>;
   return <div className="project-showcase" data-automatic={allowed} data-slide-width={content.slide_width || 'normal'} data-slide-ratio={content.slide_ratio || 'wide'} data-image-fit={content.image_fit || 'contain'}>
-    {items.length > 1 && <div className="container project-showcase-navigation" dir={en ? 'ltr' : 'rtl'} style={{ justifyContent: 'flex-end' }}>
-      <button type="button" aria-label={en ? 'Previous project' : 'المشروع السابق'} onClick={() => navigate(en ? -1 : 1)}><span aria-hidden="true">{en ? '←' : '→'}</span></button>
-      <button type="button" aria-label={en ? 'Next project' : 'المشروع التالي'} onClick={() => navigate(en ? 1 : -1)}><span aria-hidden="true">{en ? '→' : '←'}</span></button>
+    {items.length > 1 && <div className="container project-showcase-navigation" dir={en ? 'ltr' : 'rtl'}>
+      <div className="project-showcase-navigation-group" role="group" aria-label={en ? 'Project navigation' : 'التنقل بين المشاريع'}>
+        <button type="button" aria-label={en ? 'Previous project' : 'المشروع السابق'} onClick={() => navigate(en ? -1 : 1)}>{en ? <ArrowLeft aria-hidden="true" /> : <ArrowRight aria-hidden="true" />}</button>
+        <span className="project-showcase-navigation-divider" aria-hidden="true" />
+        <button type="button" aria-label={en ? 'Next project' : 'المشروع التالي'} onClick={() => navigate(en ? 1 : -1)}>{en ? <ArrowRight aria-hidden="true" /> : <ArrowLeft aria-hidden="true" />}</button>
+      </div>
     </div>}
     <div className="project-showcase-window" ref={viewport} dir="ltr" role="region" aria-label={content.title || (en ? 'Our projects' : 'مشاريعنا')} tabIndex={0}
       data-dragging={dragging || undefined}

@@ -4,4 +4,15 @@
 @media(prefers-reduced-motion:reduce){.project-showcase-group[aria-hidden=true]{display:none}}
 .project-showcase[data-slide-width=compact] .project-showcase-card{width:clamp(280px,30vw,560px)}.project-showcase[data-slide-width=wide] .project-showcase-card{width:clamp(320px,65vw,1100px)}.project-showcase[data-slide-ratio=landscape] .project-showcase-card{aspect-ratio:16/9}.project-showcase[data-slide-ratio=square] .project-showcase-card{aspect-ratio:1}.project-showcase[data-slide-ratio=portrait] .project-showcase-card{aspect-ratio:4/5}.project-showcase[data-image-fit=contain] .project-showcase-card img{object-fit:contain}
 @media(max-width:767px){.project-showcase[data-slide-width] .project-showcase-card{width:86vw}}
-.project-showcase-navigation{display:flex;justify-content:flex-start;gap:10px;margin-bottom:20px}.project-showcase-navigation button{display:grid;place-items:center;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:var(--page-background);color:var(--ink);font-size:25px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}.project-showcase-navigation button:hover{background:var(--primary);border-color:var(--primary);color:#fff}.project-showcase-window{cursor:grab}.project-showcase-window[data-dragging]{cursor:grabbing;user-select:none}.project-showcase-window[data-dragging] a{pointer-events:none}
+/* Keep both directions in one compact control, aligned to the outer edge. */
+.project-showcase-navigation{display:flex;justify-content:flex-end;margin-bottom:22px}
+.project-showcase-navigation-group{display:flex;align-items:center;gap:5px;padding:5px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--page-background) 94%,var(--ink));box-shadow:0 3px 12px color-mix(in srgb,var(--ink) 5%,transparent)}
+.project-showcase-navigation-group button{display:grid;place-items:center;flex:none;width:46px;height:42px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;transition:background .2s ease,color .2s ease,transform .2s ease;-webkit-tap-highlight-color:transparent}
+.project-showcase-navigation-group button svg{width:23px;height:23px;stroke-width:1.7}
+.project-showcase-navigation-divider{width:1px;height:19px;background:var(--line)}
+.project-showcase-navigation-group button:active{transform:scale(.94);background:color-mix(in srgb,var(--primary) 12%,var(--page-background));color:var(--primary)}
+.project-showcase .project-showcase-navigation-group button:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
+@media(hover:hover) and (pointer:fine){.project-showcase-navigation-group button:hover{background:var(--primary);color:#fff}}
+@media(max-width:767px){.project-showcase-navigation{margin-bottom:16px}.project-showcase-navigation-group{gap:4px;padding:4px}.project-showcase-navigation-group button{width:44px;height:44px}.project-showcase-navigation-group button svg{width:21px;height:21px}}
+@media(prefers-reduced-motion:reduce){.project-showcase-navigation-group button{transition:none}}
+.project-showcase-window{cursor:grab}.project-showcase-window[data-dragging]{cursor:grabbing;user-select:none}.project-showcase-window[data-dragging] a{pointer-events:none}
