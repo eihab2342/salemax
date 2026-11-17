@@ -11,6 +11,8 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
   const interactionUntil = useRef(0);
   const scrollDrive = useRef(0);
   const touchStart = useRef({ x: 0, y: 0 });
+  const drag = useRef({ active: false, moved: false, x: 0, position: 0 });
+  const [dragging, setDragging] = useState(false);
   const [allowed, setAllowed] = useState(false);
   const [paused, setPaused] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -18,7 +20,27 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
   const [touching, setTouching] = useState(false);
   const [copies, setCopies] = useState(2);
   const en = context.locale === 'en';
-  const running = allowed && !paused && !(content.pause_on_hover === true && hovering) && !focused && !touching;
+  const running = allowed && !paused && !(content.pause_on_hover === true && hovering) && !focused && !touching && !dragging;
+
+  const navigate = (direction: number) => {
+    const node = viewport.current, group = firstGroup.current;
+    if (!node || !group) return;
+    interactionUntil.current = performance.now() + 2000;
+    scrollDrive.current = 0;
+    const card = group.firstElementChild as HTMLElement | null;
+    const distance = (card?.getBoundingClientRect().width || node.clientWidth) + parseFloat(getComputedStyle(group).columnGap || '0');
+    const width = group.getBoundingClientRect().width;
+    let start = node.scrollLeft;
+    if (allowed && width > 0) {
+      start = ((start % width) + width) % width;
+      if (direction < 0 && start < distance) start += width;
+      node.scrollLeft = start;
+    }
+    const maximum = node.scrollWidth - node.clientWidth;
+    let target = start + direction * distance;
+    if (!allowed) target = target > maximum + 1 ? 0 : target < -1 ? maximum : target;
+    node.scrollTo({ left: target, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  };
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -42,7 +64,7 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
     let lastScroll = window.scrollY;
     const scroll = () => {
       const distance = window.scrollY - lastScroll; lastScroll = window.scrollY;
-      if (visible && content.scroll_reactive !== false && !document.hidden) scrollDrive.current = Math.max(-700, Math.min(700, scrollDrive.current + distance * .75));
+      if (visible && content.scroll_reactive === true && !document.hidden) scrollDrive.current = Math.max(-700, Math.min(700, scrollDrive.current + distance * .75));
     };
     window.addEventListener('scroll', scroll, { passive: true });
     const step = (time: number) => {
@@ -70,11 +92,50 @@ export function ProjectShowcase({ content, context, enabled, mobile }: { content
     })}
   </div>;
   return <div className="project-showcase" data-automatic={allowed} data-slide-width={content.slide_width || 'normal'} data-slide-ratio={content.slide_ratio || 'wide'} data-image-fit={content.image_fit || 'contain'}>
+    {items.length > 1 && <div className="container project-showcase-navigation" dir={en ? 'ltr' : 'rtl'}>
+      <button type="button" aria-label={en ? 'Previous project' : 'المشروع السابق'} onClick={() => navigate(en ? -1 : 1)}><span aria-hidden="true">{en ? '←' : '→'}</span></button>
+      <button type="button" aria-label={en ? 'Next project' : 'المشروع التالي'} onClick={() => navigate(en ? 1 : -1)}><span aria-hidden="true">{en ? '→' : '←'}</span></button>
+    </div>}
     <div className="project-showcase-window" ref={viewport} dir="ltr" role="region" aria-label={content.title || (en ? 'Our projects' : 'مشاريعنا')} tabIndex={0}
-      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovering(true); }} onPointerLeave={() => setHovering(false)}
+      data-dragging={dragging || undefined}
+      onDragStart={event => event.preventDefault()}
+      onPointerDown={event => {
+        if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        interactionUntil.current = performance.now() + 2000;
+        const node = event.currentTarget, width = firstGroup.current?.getBoundingClientRect().width || 0;
+        if (allowed && width > 0) node.scrollLeft = ((node.scrollLeft % width) + width) % width + width;
+        drag.current = { active: true, moved: false, x: event.clientX, position: node.scrollLeft };
+        setDragging(true);
+      }}
+      onPointerMove={event => {
+        if (!drag.current.active) return;
+        const delta = event.clientX - drag.current.x;
+        if (!drag.current.moved && Math.abs(delta) < 6) return;
+        drag.current.moved = true;
+        event.currentTarget.setPointerCapture(event.pointerId);
+        setDragging(true);
+        let position = drag.current.position - delta;
+        const width = firstGroup.current?.getBoundingClientRect().width || 0;
+        if (allowed && width > 0) {
+          while (position < width / 2) { position += width; drag.current.position += width; }
+          while (position > width * 1.5) { position -= width; drag.current.position -= width; }
+        }
+        event.currentTarget.scrollLeft = position;
+      }}
+      onPointerUp={event => {
+        if (!drag.current.active) return;
+        drag.current.active = false;
+        interactionUntil.current = performance.now() + 1800;
+        setDragging(false);
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+      }}
+      onPointerCancel={() => { drag.current.active = false; setDragging(false); }}
+      onLostPointerCapture={() => { drag.current.active = false; setDragging(false); }}
+      onClickCapture={event => { if (drag.current.moved) { event.preventDefault(); event.stopPropagation(); drag.current.moved = false; } }}
+      onPointerEnter={event => { if (event.pointerType === 'mouse') setHovering(true); }} onPointerLeave={() => { setHovering(false); if (!drag.current.moved) { drag.current.active = false; setDragging(false); } }}
       onFocusCapture={event => setFocused(event.target.matches(':focus-visible'))} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }}
       onKeyDown={() => setFocused(true)}
-      onTouchStart={event => { touchStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }}
+      onTouchStart={event => { setTouching(true); interactionUntil.current = performance.now() + 2000; touchStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }}
       onTouchMove={event => { const dx = Math.abs(event.touches[0].clientX - touchStart.current.x), dy = Math.abs(event.touches[0].clientY - touchStart.current.y); if (dx > 8 && dx > dy) setTouching(true); }}
       onTouchEnd={() => { if (touching) interactionUntil.current = performance.now() + 1500; setTouching(false); }} onTouchCancel={() => setTouching(false)}
       onWheel={event => { if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) interactionUntil.current = performance.now() + 1500; }}>
